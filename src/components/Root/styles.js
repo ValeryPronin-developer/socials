@@ -8,20 +8,10 @@ export const Menu = styled.div`
     display: flex;
     gap: 15px;
     justify-content: space-between;
+    padding: 1rem;
 `
 
 export const MenuItem = styled(NavLink)`
     font-size: 16px;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.87);
-    
-    &:hover {
-        color: #535bf2;
-        text-decoration: underline;
-    }
-    
-    &.active {
-        color: #646cff;
-        font-weight: bold;
-    }
 `
