@@ -1,10 +1,12 @@
 import React from 'react';
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import {StrictMode} from 'react'
+import {createRoot} from 'react-dom/client'
 import {
     createBrowserRouter,
     RouterProvider
 } from "react-router-dom";
+import {store} from "./redux/store.js";
+import {Provider} from 'react-redux'
 import './index.css'
 import App from './App.jsx'
 import {Posts} from "./pages/posts/index.jsx";
@@ -17,34 +19,40 @@ import {Registration} from "./pages/registration/index.jsx";
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Root />,
+        element: <Root/>,
         children: [
             {
+                index: true,
+                element: <App/>,
+            },
+            {
                 path: 'posts',
-                element: <Posts />,
+                element: <Posts/>,
             },
             {
                 path: 'users',
-                element: <Users />,
+                element: <Users/>,
             },
             {
                 path: 'friends',
-                element: <Friends />,
+                element: <Friends/>,
             },
             {
                 path: 'auth',
-                element: <Auth />,
+                element: <Auth/>,
             },
             {
                 path: 'registration',
-                element: <Registration />,
+                element: <Registration/>,
             }
         ]
     }
 ])
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
+    <StrictMode>
+        <Provider store={store}>
+            <RouterProvider router={router}/>
+        </Provider>
+    </StrictMode>,
 )
