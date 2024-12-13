@@ -1,24 +1,24 @@
-const TodosModel = require('../models/todosModel')
+const PostsModel = require('../models/postsModel')
 
-class todosController {
-    async getTodos(req, res) {
+class postsController {
+    async getPosts(req, res) {
         try {
-            const result = await TodosModel.find({}, "title")
-            res.status(200).json({todos: result})
+            const result = await PostsModel.find({}, "title")
+            res.status(200).json({posts: result})
         } catch (e) {
             res.status(400).json({message: 'Произошла ошибка при получении'})
         }
     }
 
-    async addTodo(req, res) {
+    async addPost(req, res) {
         try {
             if (!req.body.title) {
-                return res.status(400).json({message: 'Пожалуйста, добавьте заголовок'})
+                return res.status(400).json({message: 'Пожалуйста, добавьте текст'})
             }
 
-            const todoModel = new TodosModel({title: req.body.title})
+            const postModel = new PostsModel({title: req.body.title})
 
-            await todoModel.save()
+            await postModel.save()
 
             return res.status(200).json({message: 'Элемент успешно добавлен'})
         } catch (e) {
@@ -26,9 +26,9 @@ class todosController {
         }
     }
 
-    async deleteTodo(req, res) {
+    async deletePost(req, res) {
         try {
-            const {deletedCount} = await TodosModel.deleteOne({_id: req.body.id})
+            const {deletedCount} = await PostsModel.deleteOne({_id: req.body.id})
 
             if (!deletedCount) {
                 res.status(400).json({message: 'Удаление не произошло, пожалуйста, проверьте заголовок'})
@@ -40,7 +40,7 @@ class todosController {
         }
     }
 
-    async updateTodo(req, res) {
+    async updatePost(req, res) {
         try {
             const {id, newTitle} = req.body
 
@@ -48,7 +48,7 @@ class todosController {
                 return res.status(400).json({message: 'Пожалуйста, укажите ID и новый заголовок'})
             }
 
-            const result = await TodosModel.findByIdAndUpdate(
+            const result = await PostsModel.findByIdAndUpdate(
                 id,
                 {title: newTitle},
                 {new: true}
@@ -58,7 +58,7 @@ class todosController {
                 return res.status(404).json({message: 'Задача с указанным ID не найдена'})
             }
 
-            return res.status(200).json({message: 'Элемент успешно обновлен', todo: result})
+            return res.status(200).json({message: 'Элемент успешно обновлен', post: result})
         } catch (e) {
             res.status(500).json({message: 'Произошла ошибка при обновлении'})
         }
@@ -66,4 +66,4 @@ class todosController {
 
 }
 
-module.exports = new todosController()
+module.exports = new postsController()
