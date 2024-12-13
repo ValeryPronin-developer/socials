@@ -1,29 +1,29 @@
 import React, {useState, useCallback, useEffect,} from 'react';
-import {TodoList} from './components/TodoList'
-import {useGetTodoList} from "../../hooks/useGetTodoList.js";
-import {AddTodoItem} from "./components/AddTodoItem";
+import {PostList} from './components/PostList'
+import {useGetPostList} from "../../hooks/useGetPostList.js";
+import {AddPostItem} from "./components/AddPostItem";
 import {Container} from "../Container/index.jsx";
 import * as SC from "./styles.js";
 
 export const Posts = () => {
-    const [todoList, setTodoList] = useState([])
+    const [postList, setPostList] = useState([])
 
-    const getTodoList = useGetTodoList()
+    const getPostList = useGetPostList()
 
-    const updateTodoList = useCallback(() => {
-        getTodoList().then((result) => setTodoList(result.todos))
-    }, [getTodoList])
+    const updatePostList = useCallback(() => {
+        getPostList().then((result) => setPostList(result.posts))
+    }, [getPostList])
 
     useEffect(() => {
-        updateTodoList()
-    }, [updateTodoList])
+        updatePostList()
+    }, [updatePostList])
 
     return (
         <Container>
             <SC.Posts>
                 <SC.Title>Посты</SC.Title>
-                <AddTodoItem updateTodoList={updateTodoList}/>
-                <TodoList todoList={todoList} updateTodoList={updateTodoList}/>
+                <AddPostItem updatePostList={updatePostList}/>
+                <PostList postList={postList} updatePostList={updatePostList}/>
             </SC.Posts>
         </Container>
     )

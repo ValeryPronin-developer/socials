@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
-export const TodoListContainer = styled.div`
+export const PostListContainer = styled.div`
+    min-width: 1024px;
     display: flex;
     flex-direction: column;
     gap: 20px;
     margin: 20px auto;
 `
 
-export const TodoItem = styled.div`
+export const PostItem = styled.div`
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -26,7 +27,7 @@ export const Name = styled.div`
     font-size: 20px;
 `
 
-export const TodoText = styled.div`
+export const PostText = styled.div`
     word-wrap: break-word;
     word-break: break-word;
     max-width: 100%;

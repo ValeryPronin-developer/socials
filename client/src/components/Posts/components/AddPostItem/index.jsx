@@ -2,7 +2,7 @@ import {useState} from "react"
 import { useApiRequest } from '../../../../hooks/useApiRequest.js'
 import * as SC from './styles.js'
 
-export const AddTodoItem = ({updateTodoList}) => {
+export const AddPostItem = ({updatePostList}) => {
     const [title, setTitle] = useState('')
 
     const apiRequest = useApiRequest()
@@ -12,12 +12,12 @@ export const AddTodoItem = ({updateTodoList}) => {
 
         try {
             await apiRequest({
-                url: "http://localhost:3002/api/todos/add",
+                url: "http://localhost:3002/api/posts/add",
                 method: "post",
                 body: { title }
             })
 
-            updateTodoList()
+            updatePostList()
             setTitle('')
         } catch (e) {
             console.error(e)
