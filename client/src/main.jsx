@@ -11,10 +11,10 @@ import './index.css'
 import App from './App.jsx'
 import {PostsPage} from "./pages/posts/index.jsx";
 import {Root} from "./components/Root/index.jsx";
-import {Users} from "./pages/users/index.jsx";
-import {Friends} from "./pages/friends/index.jsx";
-import {Auth} from "./pages/auth/index.jsx";
-import {Registration} from "./pages/registration/index.jsx";
+import {UsersPage} from "./pages/users/index.jsx";
+import {FriendsPage} from "./pages/friends/index.jsx";
+import {AuthPage} from "./pages/auth/index.jsx";
+import {RegistrationPage} from "./pages/registration/index.jsx";
 
 const router = createBrowserRouter([
     {
@@ -27,23 +27,23 @@ const router = createBrowserRouter([
             },
             {
                 path: 'posts',
-                element: <PostsPage />,
+                element: <PostsPage/>,
             },
             {
                 path: 'users',
-                element: <Users/>,
+                element: <UsersPage/>,
             },
             {
                 path: 'friends',
-                element: <Friends/>,
+                element: <FriendsPage/>,
             },
             {
                 path: 'auth',
-                element: <Auth/>,
+                element: <AuthPage/>,
             },
             {
                 path: 'registration',
-                element: <Registration/>,
+                element: <RegistrationPage/>,
             }
         ]
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Friends = () => {
+export const FriendsPage = () => {
     return (
         <>Friends...</>
     )

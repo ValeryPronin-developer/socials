@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {NavLink} from "react-router-dom";
 
 export const Menu = styled.div`
-    max-width: 700px;
+    max-width: 800px;
     margin: 0 auto;
     align-items: center;
     display: flex;
@@ -19,6 +19,7 @@ export const MenuContainer = styled.div`
 export const AuthContainer = styled.div`
     display: flex;
     gap: 10px;
+    align-items: center;
 `
 
 export const MenuItem = styled(NavLink)`
