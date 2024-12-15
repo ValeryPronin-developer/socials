@@ -26,7 +26,7 @@ export const AuthPage = () => {
                 body: formData,
             })
 
-            dispatch(login({ name: data.name, isAdmin: data.isAdmin, token: data.token }))
+            dispatch(login({ name: data.name, isAdmin: data.isAdmin, token: data.token, email: data.email }))
 
             navigate("/posts")
         } catch (e) {

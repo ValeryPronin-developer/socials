@@ -22,7 +22,7 @@ export const PostList = ({postList, updatePostList}) => {
 
     const editPostItem = async (id, currentTitle) => {
         const newTitle = prompt("Введите новый заголовок", currentTitle)
-        if (!newTitle) return
+        if (!newTitle || newTitle === currentTitle) return
 
         try {
             const res = await apiRequest({
@@ -42,6 +42,18 @@ export const PostList = ({postList, updatePostList}) => {
         }
     }
 
+    const formatDate = (isoDate) => {
+        if (!isoDate) return "Неизвестно"
+        const date = new Date(isoDate)
+        return date.toLocaleString("ru-RU", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        })
+    }
+
     return <>
         {
             !postList.length && <>Loading...</>
@@ -51,16 +63,25 @@ export const PostList = ({postList, updatePostList}) => {
                 postList
                     .slice()
                     .reverse()
-                    .map((item) => <SC.PostItem key={item._id}>
-                        <SC.Header>
-                            <SC.Name>{item.name || "Без имени"}</SC.Name>
-                            <SC.ButtonContainer>
-                                {user && <button onClick={() => editPostItem(item._id, item.title)}>Редактировать</button>}
-                                {user && user.isAdmin && <SC.Button onClick={() => deletePostItem(item._id)}>X</SC.Button>}
-                            </SC.ButtonContainer>
-                        </SC.Header>
-                        <SC.PostText>{item.title}</SC.PostText>
-                    </SC.PostItem>)
+                    .map((item) => {
+                        const canEdit = user && (user.email === item.login)
+                        const canEditOrDelete = user && (user.email === item.login || user.isAdmin)
+
+                        return (
+                            <SC.PostItem key={item._id}>
+                                <SC.Header>
+                                    <SC.Name>{item.author || "Без имени"}</SC.Name>
+                                    <SC.ButtonContainer>
+                                        <SC.Date>{formatDate(item.createdAt)}</SC.Date>
+                                        {canEdit && <button
+                                            onClick={() => editPostItem(item._id, item.title)}>Редактировать</button>}
+                                        {canEditOrDelete &&
+                                            <SC.Button onClick={() => deletePostItem(item._id)}>X</SC.Button>}
+                                    </SC.ButtonContainer>
+                                </SC.Header>
+                                <SC.PostText>{item.title}</SC.PostText>
+                            </SC.PostItem>)
+                    })
             }
         </SC.PostListContainer>
     </>

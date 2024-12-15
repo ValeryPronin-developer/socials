@@ -3,7 +3,7 @@ const PostsModel = require('../models/postsModel')
 class postsController {
     async getPosts(req, res) {
         try {
-            const result = await PostsModel.find({}, "title")
+            const result = await PostsModel.find({}, "title author createdAt login")
             res.status(200).json({posts: result})
         } catch (e) {
             res.status(400).json({message: 'Произошла ошибка при получении'})
@@ -12,17 +12,20 @@ class postsController {
 
     async addPost(req, res) {
         try {
-            if (!req.body.title) {
-                return res.status(400).json({message: 'Пожалуйста, добавьте текст'})
+            const { title, author, login } = req.body
+
+            if (!title || !author || !login) {
+                return res.status(400).json({ message: 'Пожалуйста, добавьте текст, имя автора и логин' })
             }
 
-            const postModel = new PostsModel({title: req.body.title})
+            const postModel = new PostsModel({ title, author, login })
 
             await postModel.save()
 
-            return res.status(200).json({message: 'Элемент успешно добавлен'})
+            return res.status(200).json({ message: 'Элемент успешно добавлен' })
         } catch (e) {
-            res.status(400).json({message: 'Произошла ошибка при добавлении'})
+            console.error(e)
+            res.status(400).json({ message: 'Произошла ошибка при добавлении' })
         }
     }
 
