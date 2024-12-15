@@ -38,7 +38,7 @@ class AuthController {
                     process.env.JWT_SECRET,
                     { expiresIn: '1h' }
                 )
-                return res.status(200).json({ token, name: "Admin", isAdmin: true })
+                return res.status(200).json({ token, name: "Admin", isAdmin: true, email })
             }
 
             const user = await UserModel.findOne({ email })
