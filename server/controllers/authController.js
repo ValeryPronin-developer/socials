@@ -6,6 +6,12 @@ class AuthController {
     async register(req, res) {
         try {
             const { name, email, password } = req.body
+
+            const existingUser = await UserModel.findOne({ email })
+            if (existingUser) {
+                return res.status(400).json({ message: 'Такой пользователь уже зарегистрирован' })
+            }
+
             const hashedPassword = await bcrypt.hash(password, 10)
 
             const user = new UserModel({
@@ -15,6 +21,7 @@ class AuthController {
             })
 
             await user.save()
+
             res.status(201).json({ message: 'Пользователь успешно зарегистрирован' })
         } catch (e) {
             res.status(500).json({ message: 'Ошибка при регистрации' })
@@ -50,7 +57,7 @@ class AuthController {
                 { expiresIn: '1h' }
             )
 
-            res.status(200).json({ token, name: user.name, isAdmin: user.isAdmin })
+            res.status(200).json({ token, name: user.name, isAdmin: user.isAdmin, email })
         } catch (e) {
             res.status(500).json({ message: 'Ошибка при авторизации' })
         }

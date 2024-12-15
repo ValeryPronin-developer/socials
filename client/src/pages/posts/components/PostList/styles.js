@@ -27,6 +27,12 @@ export const Name = styled.div`
     font-size: 20px;
 `
 
+export const Date = styled.div`
+    font-size: 14px;
+    color: #888;
+    margin-top: 5px;
+`
+
 export const PostText = styled.div`
     word-wrap: break-word;
     word-break: break-word;
@@ -37,10 +43,10 @@ export const PostText = styled.div`
 export const ButtonContainer = styled.div`
     display: flex;
     gap: 10px;
+    align-items: center;
 `
 
 export const Button = styled.button`
-    padding: 0 14px;
     border: none;
     border-radius: 4px;
     transition: background-color 0.3s;
