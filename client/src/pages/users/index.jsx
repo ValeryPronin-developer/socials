@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import * as SC from './styles.js'
-import { useApiRequest } from '../../hooks/useApiRequest.js'
+import {useApiRequest} from '../../hooks/useApiRequest.js'
 import {Container} from "../../components/Container/index.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {updateFriends} from "../../redux/slices/userSlices.js";
 
 export const UsersPage = () => {
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const apiRequest = useApiRequest()
+    const userAuth = useSelector((state) => state.user.user)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const data = await apiRequest({ url: 'http://localhost:3002/api/users' })
+                const data = await apiRequest({url: 'http://localhost:3002/api/users'})
                 setUsers(data)
             } catch (e) {
                 setError(e.message)
@@ -23,6 +27,34 @@ export const UsersPage = () => {
 
         fetchUsers()
     }, [apiRequest])
+
+    const handleAddFriend = async (friendEmail) => {
+        try {
+            await apiRequest({
+                url: 'http://localhost:3002/api/users/add-friend',
+                method: 'post',
+                body: {currentEmail: userAuth.email, friendEmail}
+            })
+
+            dispatch(updateFriends([...userAuth.friends, friendEmail]))
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    const handleRemoveFriend = async (friendEmail) => {
+        try {
+            await apiRequest({
+                url: 'http://localhost:3002/api/users/remove-friend',
+                method: 'post',
+                body: { currentEmail: userAuth.email, friendEmail }
+            })
+
+            dispatch(updateFriends(userAuth.friends.filter((email) => email !== friendEmail)))
+        } catch (e) {
+            console.error(e)
+        }
+    }
 
     if (loading) {
         return <Container>Загрузка...</Container>
@@ -44,7 +76,17 @@ export const UsersPage = () => {
                             </SC.AvatarPlaceholder>
                             <SC.UserDetails>
                                 <SC.UserName>{user.name}</SC.UserName>
-                                <SC.AddFriendButton>Добавить в друзья</SC.AddFriendButton>
+                                {userAuth && userAuth.email !== user.email && (
+                                    userAuth.friends?.includes(user.email) ? (
+                                        <SC.RemoveFriendButton onClick={() => handleRemoveFriend(user.email)}>
+                                            Удалить из друзей
+                                        </SC.RemoveFriendButton>
+                                    ) : (
+                                        <SC.AddFriendButton onClick={() => handleAddFriend(user.email)}>
+                                            Добавить в друзья
+                                        </SC.AddFriendButton>
+                                    )
+                                )}
                             </SC.UserDetails>
                         </SC.UserInfo>
                     </SC.UserCard>

@@ -52,4 +52,5 @@ export const Shape = styled.div`
     opacity: 0.7;
     border-radius: ${({shape}) => (shape === 'circle' ? '50%' : '0%')};
     animation: ${shapeAnimation} ${({duration}) => duration}s ease-in-out infinite;
+    z-index: -1;
 `

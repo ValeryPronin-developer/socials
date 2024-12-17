@@ -1,15 +1,30 @@
-import React from 'react';
-import {Outlet} from "react-router-dom";
-import * as SC from './styles.js';
-import {Container} from "../Container/index.jsx";
-import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../redux/slices/userSlices.js";
+import React, { useEffect } from 'react'
+import { Outlet } from "react-router-dom"
+import * as SC from './styles.js'
+import { Container } from "../Container/index.jsx"
+import { useDispatch, useSelector } from "react-redux"
+import { login, logout } from "../../redux/slices/userSlices.js"
 
 export const Root = () => {
     const user = useSelector((state) => state.user.user)
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        if (!user) {
+            const rememberMe = localStorage.getItem("rememberMe") === "true"
+            const storageKey = rememberMe ? "localStorage" : "sessionStorage"
+            const storedUser = window[storageKey].getItem("user")
+
+            if (storedUser) {
+                const parsedUser = JSON.parse(storedUser)
+                dispatch(login(parsedUser))
+            }
+        }
+    }, [dispatch, user])
+
     const handleLogout = () => {
+        const storageKey = localStorage.getItem("rememberMe") === "true" ? "localStorage" : "sessionStorage"
+        window[storageKey].removeItem("user")
         dispatch(logout())
     }
 
@@ -39,7 +54,7 @@ export const Root = () => {
                     </SC.AuthContainer>
                 </SC.Menu>
             </Container>
-            <Outlet/>
+            <Outlet />
         </>
     )
 }

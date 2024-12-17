@@ -53,16 +53,6 @@ export const UserName = styled.div`
     font-size: 20px;
 `
 
-export const AddFriendButton = styled.button`
-    font-size: 14px;
-    border: none;
-    transition: background 0.3s;
-
-    &:hover {
-        background: #646cff;
-    }
-`
-
 export const RemoveFriendButton = styled.button`
     font-size: 14px;
     background-color: #ff4d4f;
