@@ -3,5 +3,8 @@ const UserController = require('../controllers/userController')
 const router = Router()
 
 router.get('/', UserController.getAllUsers)
+router.get('/:email/friends', UserController.getFriends)
+router.post('/add-friend', UserController.addFriend)
+router.post('/remove-friend', UserController.removeFriend)
 
 module.exports = router

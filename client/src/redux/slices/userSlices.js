@@ -14,9 +14,14 @@ const userSlice = createSlice({
         logout: (state) => {
             state.user = null
         },
+        updateFriends: (state, action) => {
+            if (state.user) {
+                state.user.friends = action.payload
+            }
+        },
     },
 })
 
-export const { login, logout } = userSlice.actions
+export const { login, logout, updateFriends } = userSlice.actions
 
 export default userSlice.reducer

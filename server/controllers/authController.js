@@ -30,7 +30,7 @@ class AuthController {
 
     async login(req, res) {
         try {
-            const { email, password } = req.body
+            const { email, password, friends } = req.body
 
             if (email === "admin@admin" && password === "admin") {
                 const token = jwt.sign(
@@ -38,7 +38,7 @@ class AuthController {
                     process.env.JWT_SECRET,
                     { expiresIn: '1h' }
                 )
-                return res.status(200).json({ token, name: "Admin", isAdmin: true, email })
+                return res.status(200).json({ token, name: "Admin", isAdmin: true, email, friends })
             }
 
             const user = await UserModel.findOne({ email })
@@ -57,7 +57,7 @@ class AuthController {
                 { expiresIn: '1h' }
             )
 
-            res.status(200).json({ token, name: user.name, isAdmin: user.isAdmin, email })
+            res.status(200).json({ token, name: user.name, isAdmin: user.isAdmin, email, friends: user.friends })
         } catch (e) {
             res.status(500).json({ message: 'Ошибка при авторизации' })
         }
