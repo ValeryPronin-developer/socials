@@ -1,8 +1,15 @@
 import styled from "styled-components";
 
 export const Title = styled.h2`
+    font-size: 36px;
     text-align: center;
-    font-size: 24px;
+    margin: 10px 10px 46px 10px;
+`
+
+export const NoFriendsMessage = styled.p`
+    color: gray;
+    text-align: center;
+    margin-top: 20px;
 `
 
 export const UserList = styled.div`

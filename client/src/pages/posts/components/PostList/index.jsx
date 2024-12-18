@@ -1,17 +1,21 @@
 import {useApiRequest} from '../../../../hooks/useApiRequest.js'
 import * as SC from './styles.js'
-import {useSelector} from "react-redux";
+import {useSelector} from "react-redux"
+import {useState} from "react"
+import {Loading} from "../../../../components/ui/Loading/index.jsx";
 
 export const PostList = ({postList, updatePostList}) => {
     const apiRequest = useApiRequest()
     const user = useSelector((state) => state.user.user)
+    const [editMode, setEditMode] = useState(null)
+    const [editText, setEditText] = useState('')
 
     const deletePostItem = async (id) => {
         try {
             await apiRequest({
                 url: "http://localhost:3002/api/posts/delete",
                 method: "delete",
-                body: {id}
+                body: {id},
             })
 
             updatePostList()
@@ -20,15 +24,17 @@ export const PostList = ({postList, updatePostList}) => {
         }
     }
 
-    const editPostItem = async (id, currentTitle) => {
-        const newTitle = prompt("Введите новый заголовок", currentTitle)
-        if (!newTitle || newTitle === currentTitle) return
+    const savePostItem = async (id) => {
+        if (!editText.trim()) {
+            alert("Заголовок не может быть пустым")
+            return
+        }
 
         try {
             const res = await apiRequest({
                 url: "http://localhost:3002/api/posts/update",
                 method: "PUT",
-                body: {id, newTitle},
+                body: {id, newTitle: editText},
             })
 
             if (!res) {
@@ -36,6 +42,7 @@ export const PostList = ({postList, updatePostList}) => {
                 return
             }
 
+            setEditMode(null)
             updatePostList()
         } catch (e) {
             console.error(e)
@@ -54,13 +61,11 @@ export const PostList = ({postList, updatePostList}) => {
         })
     }
 
-    return <>
-        {
-            !postList.length && <>Loading...</>
-        }
-        <SC.PostListContainer>
-            {
-                postList
+    return (
+        <>
+            {!postList?.length && <Loading />}
+            <SC.PostListContainer>
+                {postList
                     .slice()
                     .reverse()
                     .map((item) => {
@@ -72,17 +77,42 @@ export const PostList = ({postList, updatePostList}) => {
                                 <SC.Header>
                                     <SC.Name>{item.author || "Без имени"}</SC.Name>
                                     <SC.ButtonContainer>
-                                        <SC.Date>{formatDate(item.createdAt)}</SC.Date>
-                                        {canEdit && <button
-                                            onClick={() => editPostItem(item._id, item.title)}>Редактировать</button>}
-                                        {canEditOrDelete &&
-                                            <SC.Button onClick={() => deletePostItem(item._id)}>X</SC.Button>}
+                                        {canEdit && (
+                                            <>
+                                                {editMode === item._id ? (
+                                                    <button onClick={() => savePostItem(item._id)}>
+                                                        Сохранить
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => {
+                                                            setEditMode(item._id)
+                                                            setEditText(item.title)
+                                                        }}
+                                                    >
+                                                        Редактировать
+                                                    </button>
+                                                )}
+                                            </>
+                                        )}
+                                        {canEditOrDelete && (
+                                            <SC.Button onClick={() => deletePostItem(item._id)}>X</SC.Button>
+                                        )}
                                     </SC.ButtonContainer>
                                 </SC.Header>
-                                <SC.PostText>{item.title}</SC.PostText>
-                            </SC.PostItem>)
-                    })
-            }
-        </SC.PostListContainer>
-    </>
+                                {editMode === item._id ? (
+                                    <SC.EditInput
+                                        value={editText}
+                                        onChange={(e) => setEditText(e.target.value)}
+                                    />
+                                ) : (
+                                    <SC.PostText>{item.title}</SC.PostText>
+                                )}
+                                <SC.Date>{formatDate(item.createdAt)}</SC.Date>
+                            </SC.PostItem>
+                        )
+                    })}
+            </SC.PostListContainer>
+        </>
+    )
 }

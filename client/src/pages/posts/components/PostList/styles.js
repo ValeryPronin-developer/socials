@@ -31,6 +31,7 @@ export const Date = styled.div`
     font-size: 14px;
     color: #888;
     margin-top: 5px;
+    text-align: end;
 `
 
 export const PostText = styled.div`
@@ -54,5 +55,22 @@ export const Button = styled.button`
 
     &:hover {
         background-color: #c0392b;
+    }
+`
+
+
+export const EditInput = styled.textarea`
+    width: 97%;
+    min-height: 67px;
+    padding: 10px 12px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 4px;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.3s;
+
+    &:focus {
+        border-color: #535bf2;
     }
 `
