@@ -30,6 +30,7 @@ export const RegistrationPage = () => {
         }
     }
 
+    const isFormValid = formData.email.trim() !== "" && formData.password.trim() !== "" && formData.name.trim() !== ""
 
     return (
         <SC.Form onSubmit={handleSubmit}>
@@ -54,7 +55,7 @@ export const RegistrationPage = () => {
                 value={formData.password}
                 onChange={handleChange}
             />
-            <button>Зарегистрироваться</button>
+            <button disabled={!isFormValid}>Зарегистрироваться</button>
         </SC.Form>
     )
 }

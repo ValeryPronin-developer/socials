@@ -4,6 +4,7 @@ import {useApiRequest} from '../../hooks/useApiRequest.js'
 import {Container} from "../../components/Container/index.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {updateFriends} from "../../redux/slices/userSlices.js";
+import {Loading} from "../../components/ui/Loading/index.jsx";
 
 export const UsersPage = () => {
     const [users, setUsers] = useState([])
@@ -57,7 +58,7 @@ export const UsersPage = () => {
     }
 
     if (loading) {
-        return <Container>Загрузка...</Container>
+        return <Loading />
     }
 
     if (error) {

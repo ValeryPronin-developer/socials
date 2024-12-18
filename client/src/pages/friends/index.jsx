@@ -4,6 +4,7 @@ import {useApiRequest} from '../../hooks/useApiRequest.js'
 import {Container} from '../../components/Container/index.jsx'
 import {useDispatch, useSelector} from 'react-redux'
 import {updateFriends} from '../../redux/slices/userSlices.js'
+import {Loading} from "../../components/ui/Loading/index.jsx";
 
 export const FriendsPage = () => {
     const [friends, setFriends] = useState([])
@@ -48,7 +49,7 @@ export const FriendsPage = () => {
     }
 
     if (loading) {
-        return <Container>Загрузка...</Container>
+        return <Loading />
     }
 
     if (error) {
@@ -58,23 +59,27 @@ export const FriendsPage = () => {
     return (
         <Container>
             <SC.Title>Друзья</SC.Title>
-            <SC.UserList>
-                {friends.map((friend) => (
-                    <SC.UserCard key={friend._id}>
-                        <SC.UserInfo>
-                            <SC.AvatarPlaceholder>
-                                <img src="../../../public/person.webp" alt="avatar"/>
-                            </SC.AvatarPlaceholder>
-                            <SC.UserDetails>
-                                <SC.UserName>{friend.name}</SC.UserName>
-                                <SC.RemoveFriendButton onClick={() => handleRemoveFriend(friend.email)}>
-                                    Удалить из друзей
-                                </SC.RemoveFriendButton>
-                            </SC.UserDetails>
-                        </SC.UserInfo>
-                    </SC.UserCard>
-                ))}
-            </SC.UserList>
+            {friends.length === 0 ? (
+                <SC.NoFriendsMessage>У вас пока нет друзей</SC.NoFriendsMessage>
+            ) : (
+                <SC.UserList>
+                    {friends.map((friend) => (
+                        <SC.UserCard key={friend._id}>
+                            <SC.UserInfo>
+                                <SC.AvatarPlaceholder>
+                                    <img src="../../../public/person.webp" alt="avatar"/>
+                                </SC.AvatarPlaceholder>
+                                <SC.UserDetails>
+                                    <SC.UserName>{friend.name}</SC.UserName>
+                                    <SC.RemoveFriendButton onClick={() => handleRemoveFriend(friend.email)}>
+                                        Удалить из друзей
+                                    </SC.RemoveFriendButton>
+                                </SC.UserDetails>
+                            </SC.UserInfo>
+                        </SC.UserCard>
+                    ))}
+                </SC.UserList>
+            )}
         </Container>
     )
 }

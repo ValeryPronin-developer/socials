@@ -4,7 +4,7 @@ import * as SC from "./styles"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { login } from "../../redux/slices/userSlices.js"
-import {Container} from "../../components/Container/index.jsx";
+import {Loading} from "../../components/ui/Loading/index.jsx";
 
 export const AuthPage = () => {
     const [formData, setFormData] = useState({ email: "", password: "" })
@@ -53,8 +53,10 @@ export const AuthPage = () => {
     }
 
     if (user) {
-        return <Container>Загружается...</Container>
+        return <Loading />
     }
+
+    const isFormValid = formData.email.trim() !== "" && formData.password.trim() !== ""
 
     return (
         <SC.Form onSubmit={handleSubmit}>
@@ -82,7 +84,7 @@ export const AuthPage = () => {
                 Запомнить меня
             </label>
 
-            <button>Войти</button>
+            <button disabled={!isFormValid}>Войти</button>
         </SC.Form>
     )
 }
