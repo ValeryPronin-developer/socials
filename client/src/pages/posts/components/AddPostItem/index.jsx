@@ -6,8 +6,8 @@ import {useSelector} from "react-redux"
 export const AddPostItem = ({updatePostList}) => {
     const [title, setTitle] = useState('')
     const [visibility, setVisibility] = useState('public')
-    const user = useSelector((state) => state.user.user)
 
+    const user = useSelector((state) => state.user.user)
     const apiRequest = useApiRequest()
 
     const onSubmit = async (e) => {

@@ -30,6 +30,7 @@ export const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 40px;
     margin-bottom: 10px;
 `
 
@@ -68,7 +69,6 @@ export const Button = styled.button`
         background-color: #c0392b;
     }
 `
-
 
 export const EditInput = styled.textarea`
     width: 97%;
