@@ -2,17 +2,22 @@ import {useApiRequest} from '../../../../hooks/useApiRequest.js'
 import * as SC from './styles.js'
 import {useSelector} from "react-redux"
 import {useState} from "react"
-import {Loading} from "../../../../components/ui/Loading/index.jsx"
+import {Comments} from "./components/Comments/index.jsx";
 
 export const PostList = ({postList, updatePostList}) => {
-    const apiRequest = useApiRequest()
-    const user = useSelector((state) => state.user.user)
     const [editMode, setEditMode] = useState(null)
     const [editText, setEditText] = useState('')
     const [viewMode, setViewMode] = useState('all')
 
+    const apiRequest = useApiRequest()
+    const user = useSelector((state) => state.user.user)
+
     const filteredPosts = postList?.filter((post) => {
         if (viewMode === 'all') {
+            if (user?.isAdmin) {
+                return true
+            }
+
             return (
                 post.visibility === 'public' ||
                 (post.visibility === 'friends' &&
@@ -154,6 +159,7 @@ export const PostList = ({postList, updatePostList}) => {
                                     <SC.PostText>{item.title}</SC.PostText>
                                 )}
                                 <SC.Date>{formatDate(item.createdAt)}</SC.Date>
+                                <Comments postId={item._id} />
                             </SC.PostItem>
                         )
                     })}

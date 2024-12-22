@@ -14,10 +14,13 @@ class AuthController {
 
             const hashedPassword = await bcrypt.hash(password, 10)
 
+            const isAdmin = email === 'admin@admin.a'
+
             const user = new UserModel({
                 name,
                 email,
                 password: hashedPassword,
+                isAdmin,
             })
 
             await user.save()
@@ -31,17 +34,17 @@ class AuthController {
     async login(req, res) {
         try {
             const { email, password, friends } = req.body
-
-            if (email === "admin@admin" && password === "admin") {
-                const token = jwt.sign(
-                    { id: "admin", isAdmin: true },
-                    process.env.JWT_SECRET,
-                    { expiresIn: '1h' }
-                )
-                return res.status(200).json({ token, name: "Admin", isAdmin: true, email, friends })
-            }
-
             const user = await UserModel.findOne({ email })
+
+            // if (email === "admin@admin" && password === "admin") {
+            //     const token = jwt.sign(
+            //         { id: "admin", isAdmin: true },
+            //         process.env.JWT_SECRET,
+            //         { expiresIn: '1h' }
+            //     )
+            //     return res.status(200).json({ token, name: "Admin", isAdmin: true, email, friends })
+            // }
+
             if (!user) {
                 return res.status(404).json({ message: 'Пользователь не найден' })
             }

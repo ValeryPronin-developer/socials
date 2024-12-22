@@ -4,6 +4,7 @@ const cors = require('cors')
 const postsRoutes = require("./routes/postsRoutes")
 const authRoutes = require("./routes/authRoutes")
 const userRoutes = require('./routes/userRoutes')
+const commentsRoutes = require('./routes/commentsRoutes')
 
 require('dotenv').config()
 
@@ -14,6 +15,7 @@ app.use(express.json())
 app.use('/api/posts', postsRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/comments', commentsRoutes)
 
 const PORT = process.env.PORT || 3001
 
