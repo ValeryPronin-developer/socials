@@ -2,13 +2,34 @@ import {useApiRequest} from '../../../../hooks/useApiRequest.js'
 import * as SC from './styles.js'
 import {useSelector} from "react-redux"
 import {useState} from "react"
-import {Loading} from "../../../../components/ui/Loading/index.jsx";
+import {Loading} from "../../../../components/ui/Loading/index.jsx"
 
 export const PostList = ({postList, updatePostList}) => {
     const apiRequest = useApiRequest()
     const user = useSelector((state) => state.user.user)
     const [editMode, setEditMode] = useState(null)
     const [editText, setEditText] = useState('')
+    const [viewMode, setViewMode] = useState('all')
+
+    const filteredPosts = postList?.filter((post) => {
+        if (viewMode === 'all') {
+            return (
+                post.visibility === 'public' ||
+                (post.visibility === 'friends' &&
+                    (user?.friends?.includes(post.login) || post.login === user?.email))
+            )
+        } else if (viewMode === 'friends') {
+            return (
+                (post.visibility === 'public' && user?.friends?.includes(post.login)) ||
+                (post.visibility === 'friends' &&
+                    user?.friends?.includes(post.login) &&
+                    post.login !== user?.email)
+            )
+        }
+        return false
+    })
+
+    const hasFriends = user?.friends?.length > 0
 
     const deletePostItem = async (id) => {
         try {
@@ -63,9 +84,33 @@ export const PostList = ({postList, updatePostList}) => {
 
     return (
         <>
-            {!postList?.length && <Loading />}
+            {user && <SC.ToggleContainer>
+                <button
+                    onClick={() => setViewMode('all')}
+                    disabled={viewMode === 'all'}
+                >
+                    Все посты
+                </button>
+                <button
+                    onClick={() => setViewMode('friends')}
+                    disabled={viewMode === 'friends'}
+                >
+                    Только друзья
+                </button>
+            </SC.ToggleContainer>}
+
+            {!filteredPosts?.length && !hasFriends && viewMode === 'friends' && (
+                <SC.Placeholder>У вас пока нет друзей, чтобы просматривать их посты</SC.Placeholder>
+            )}
+
+            {!filteredPosts?.length && hasFriends && viewMode === 'friends' && (
+                <SC.Placeholder>У ваших друзей пока нет постов</SC.Placeholder>
+            )}
+
+            {!filteredPosts?.length && viewMode === 'all' && <SC.Placeholder>Пока нет постов</SC.Placeholder>}
+
             <SC.PostListContainer>
-                {postList
+                {filteredPosts
                     .slice()
                     .reverse()
                     .map((item) => {

@@ -1,22 +1,23 @@
-import React, { useState } from "react"
-import { useApiRequest } from "../../hooks/useApiRequest.js"
+import React, {useState} from "react"
+import {useApiRequest} from "../../hooks/useApiRequest.js"
 import * as SC from "./styles"
-import { useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { login } from "../../redux/slices/userSlices.js"
+import {useNavigate} from "react-router-dom"
+import {useDispatch, useSelector} from "react-redux"
+import {login} from "../../redux/slices/userSlices.js"
 import {Loading} from "../../components/ui/Loading/index.jsx";
 
 export const AuthPage = () => {
-    const [formData, setFormData] = useState({ email: "", password: "" })
+    const [formData, setFormData] = useState({email: "", password: ""})
     const [rememberMe, setRememberMe] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
     const apiRequest = useApiRequest()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.user)
 
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData((prev) => ({ ...prev, [name]: value }))
+        const {name, value} = e.target
+        setFormData((prev) => ({...prev, [name]: value}))
     }
 
     const handleCheckboxChange = (e) => {
@@ -44,7 +45,13 @@ export const AuthPage = () => {
                 friends: data.friends
             }))
 
-            dispatch(login({ name: data.name, isAdmin: data.isAdmin, token: data.token, email: data.email, friends: data.friends }))
+            dispatch(login({
+                name: data.name,
+                isAdmin: data.isAdmin,
+                token: data.token,
+                email: data.email,
+                friends: data.friends
+            }))
 
             navigate("/posts")
         } catch (e) {
@@ -53,7 +60,7 @@ export const AuthPage = () => {
     }
 
     if (user) {
-        return <Loading />
+        return <Loading/>
     }
 
     const isFormValid = formData.email.trim() !== "" && formData.password.trim() !== ""
@@ -67,14 +74,21 @@ export const AuthPage = () => {
                 value={formData.email}
                 onChange={handleChange}
             />
-            <SC.Input
-                type="password"
-                name="password"
-                placeholder="Пароль"
-                value={formData.password}
-                onChange={handleChange}
-            />
-
+            <div style={{position: "relative"}}>
+                <SC.Input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Пароль"
+                    value={formData.password}
+                    onChange={handleChange}
+                />
+                <SC.ShowPasswordButton
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                >
+                    {showPassword ? "Скрыть" : "Показать"}
+                </SC.ShowPasswordButton>
+            </div>
             <label>
                 <input
                     type="checkbox"
@@ -83,7 +97,6 @@ export const AuthPage = () => {
                 />
                 Запомнить меня
             </label>
-
             <button disabled={!isFormValid}>Войти</button>
         </SC.Form>
     )
