@@ -1,31 +1,44 @@
 const PostsModel = require('../models/postsModel')
+const UserModel = require('../models/userModel')
 
 class postsController {
     async getPosts(req, res) {
         try {
-            const result = await PostsModel.find({}, "title author createdAt login")
-            res.status(200).json({posts: result})
+            const posts = await PostsModel.find({}, 'title author createdAt login visibility');
+            res.status(200).json({ posts });
         } catch (e) {
-            res.status(400).json({message: 'Произошла ошибка при получении'})
+            console.error('Ошибка при получении постов:', e);
+            res.status(400).json({ message: 'Произошла ошибка при получении' });
         }
     }
 
     async addPost(req, res) {
         try {
-            const { title, author, login } = req.body
+            const { title, author, login, visibility } = req.body;
 
             if (!title || !author || !login) {
-                return res.status(400).json({ message: 'Пожалуйста, добавьте текст, имя автора и логин' })
+                return res.status(400).json({ message: 'Пожалуйста, добавьте текст, имя автора и логин' });
             }
 
-            const postModel = new PostsModel({ title, author, login })
+            if (visibility === 'friends') {
+                const currentUser = await UserModel.findOne({ email: login });
+                if (!currentUser) {
+                    return res.status(404).json({ message: 'Пользователь не найден' });
+                }
 
-            await postModel.save()
+                const postModel = new PostsModel({ title, author, login, visibility });
+                await postModel.save();
 
-            return res.status(200).json({ message: 'Элемент успешно добавлен' })
+                return res.status(200).json({ message: 'Пост добавлен только для друзей' });
+            }
+
+            const postModel = new PostsModel({ title, author, login });
+            await postModel.save();
+
+            return res.status(200).json({ message: 'Пост добавлен' });
         } catch (e) {
-            console.error(e)
-            res.status(400).json({ message: 'Произошла ошибка при добавлении' })
+            console.error(e);
+            res.status(400).json({ message: 'Произошла ошибка при добавлении' });
         }
     }
 

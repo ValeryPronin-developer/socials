@@ -24,3 +24,14 @@ export const Textarea = styled.textarea`
     border-color: #535bf2;
   }
 `
+
+export const Select = styled.select`
+  padding: 8px;
+  border-radius: 6px;
+  outline: none;
+
+  &:focus {
+    border-color: #535bf2;
+    box-shadow: 0 0 5px rgba(83, 91, 242, 0.3);
+  }
+`

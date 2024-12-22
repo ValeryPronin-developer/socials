@@ -1,5 +1,16 @@
 import styled from "styled-components";
 
+export const ToggleContainer = styled.div`
+    display: flex;
+    gap: 10px;
+`
+
+export const Placeholder = styled.div`
+    text-align: center;
+    color: #777;
+    margin-top: 20px;
+`
+
 export const PostListContainer = styled.div`
     min-width: 1024px;
     display: flex;

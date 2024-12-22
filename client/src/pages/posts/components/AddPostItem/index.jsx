@@ -1,10 +1,11 @@
-import {useState} from "react"
-import { useApiRequest } from '../../../../hooks/useApiRequest.js'
+import React, {useState} from "react"
+import {useApiRequest} from '../../../../hooks/useApiRequest.js'
 import * as SC from './styles.js'
-import {useSelector} from "react-redux";
+import {useSelector} from "react-redux"
 
 export const AddPostItem = ({updatePostList}) => {
     const [title, setTitle] = useState('')
+    const [visibility, setVisibility] = useState('public')
     const user = useSelector((state) => state.user.user)
 
     const apiRequest = useApiRequest()
@@ -16,11 +17,12 @@ export const AddPostItem = ({updatePostList}) => {
             await apiRequest({
                 url: "http://localhost:3002/api/posts/add",
                 method: "post",
-                body: { title, author: user.name, login: user.email }
+                body: {title, author: user.name, login: user.email, visibility}
             })
 
             updatePostList()
             setTitle('')
+            setVisibility('public')
         } catch (e) {
             console.error(e)
         }
@@ -28,7 +30,16 @@ export const AddPostItem = ({updatePostList}) => {
 
     return (
         <SC.Form onSubmit={onSubmit}>
-            <SC.Textarea type="text" placeholder="пост" value={title} onChange={(e) => setTitle(e.target.value)}/>
+            <SC.Textarea
+                type="text"
+                placeholder="Пост"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+            />
+            <SC.Select value={visibility} onChange={(e) => setVisibility(e.target.value)}>
+                <option value="public">Публичный</option>
+                <option value="friends">Только для друзей</option>
+            </SC.Select>
             <button disabled={!title.trim()}>Добавить</button>
         </SC.Form>
     )
