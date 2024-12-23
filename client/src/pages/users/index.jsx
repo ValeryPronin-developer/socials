@@ -5,11 +5,13 @@ import {Container} from "../../components/Container/index.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {updateFriends} from "../../redux/slices/userSlices.js";
 import {Loading} from "../../components/ui/Loading/index.jsx";
+import {Link} from "react-router-dom";
 
 export const UsersPage = () => {
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+
     const apiRequest = useApiRequest()
     const userAuth = useSelector((state) => state.user.user)
     const dispatch = useDispatch()
@@ -76,7 +78,9 @@ export const UsersPage = () => {
                                 <img src="../../../public/person.webp" alt="avatar"/>
                             </SC.AvatarPlaceholder>
                             <SC.UserDetails>
-                                <SC.UserName>{user.name}</SC.UserName>
+                                <SC.UserName>
+                                    <Link to={`/user/${user.email}`}>{user.name}</Link>
+                                </SC.UserName>
                                 {userAuth && userAuth.email !== user.email && (
                                     userAuth.friends?.includes(user.email) ? (
                                         <SC.RemoveFriendButton onClick={() => handleRemoveFriend(user.email)}>

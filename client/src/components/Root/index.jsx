@@ -34,6 +34,7 @@ export const Root = () => {
                 <SC.Menu>
                     <SC.MenuContainer>
                         <SC.MenuItem to={'/'}>Главная</SC.MenuItem>
+                        {user && <SC.MenuItem to={`/user/${user.email}`}>Профиль</SC.MenuItem>}
                         <SC.MenuItem to={'/posts'}>Посты</SC.MenuItem>
                         <SC.MenuItem to={'/users'}>Пользователи</SC.MenuItem>
                         {user && <SC.MenuItem to={'/friends'}>Друзья</SC.MenuItem>}

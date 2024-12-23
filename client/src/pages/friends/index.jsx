@@ -5,6 +5,7 @@ import {Container} from '../../components/Container/index.jsx'
 import {useDispatch, useSelector} from 'react-redux'
 import {updateFriends} from '../../redux/slices/userSlices.js'
 import {Loading} from "../../components/ui/Loading/index.jsx";
+import {Link} from "react-router-dom";
 
 export const FriendsPage = () => {
     const [friends, setFriends] = useState([])
@@ -70,7 +71,9 @@ export const FriendsPage = () => {
                                     <img src="../../../public/person.webp" alt="avatar"/>
                                 </SC.AvatarPlaceholder>
                                 <SC.UserDetails>
-                                    <SC.UserName>{friend.name}</SC.UserName>
+                                    <SC.UserName>
+                                        <Link to={`/user/${friend.email}`}>{friend.name}</Link>
+                                    </SC.UserName>
                                     <SC.RemoveFriendButton onClick={() => handleRemoveFriend(friend.email)}>
                                         Удалить из друзей
                                     </SC.RemoveFriendButton>

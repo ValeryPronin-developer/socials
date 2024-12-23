@@ -30,6 +30,21 @@ class UserController {
         }
     }
 
+    async getUser(req, res) {
+        try {
+            const { email } = req.params
+            const user = await UserModel.findOne({ email }, 'name email friends')
+
+            if (!user) {
+                return res.status(404).json({ message: 'Пользователь не найден' })
+            }
+
+            res.status(200).json(user)
+        } catch (e) {
+            res.status(500).json({ message: 'Ошибка при получении пользователя' })
+        }
+    }
+
     async addFriend(req, res) {
         try {
             const { currentEmail, friendEmail } = req.body

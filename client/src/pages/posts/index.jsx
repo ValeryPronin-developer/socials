@@ -25,7 +25,7 @@ export const PostsPage = () => {
             <SC.Posts>
                 <SC.Title>Посты</SC.Title>
                 {user && <AddPostItem updatePostList={updatePostList}/>}
-                <PostList postList={postList} updatePostList={updatePostList}/>
+                <PostList postList={postList} updatePostList={updatePostList} show={true}/>
             </SC.Posts>
         </Container>
     )
