@@ -1,10 +1,11 @@
+import React, {useState} from "react"
 import {useApiRequest} from '../../../../hooks/useApiRequest.js'
 import * as SC from './styles.js'
 import {useSelector} from "react-redux"
-import {useState} from "react"
 import {Comments} from "./components/Comments/index.jsx";
+import {Link} from "react-router-dom";
 
-export const PostList = ({postList, updatePostList}) => {
+export const PostList = ({postList, updatePostList, show}) => {
     const [editMode, setEditMode] = useState(null)
     const [editText, setEditText] = useState('')
     const [viewMode, setViewMode] = useState('all')
@@ -89,7 +90,7 @@ export const PostList = ({postList, updatePostList}) => {
 
     return (
         <>
-            {user && <SC.ToggleContainer>
+            {user && show && <SC.ToggleContainer>
                 <button
                     onClick={() => setViewMode('all')}
                     disabled={viewMode === 'all'}
@@ -125,7 +126,9 @@ export const PostList = ({postList, updatePostList}) => {
                         return (
                             <SC.PostItem key={item._id}>
                                 <SC.Header>
-                                    <SC.Name>{item.author || "Без имени"}</SC.Name>
+                                    <SC.Name>
+                                        <Link to={`/user/${item.login}`}>{item.author}</Link>
+                                    </SC.Name>
                                     <SC.ButtonContainer>
                                         {canEdit && (
                                             <>

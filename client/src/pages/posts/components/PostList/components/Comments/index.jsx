@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import * as SC from './styles.js'
 import {useApiRequest} from "../../../../../../hooks/useApiRequest.js"
 import {useSelector} from "react-redux"
+import {Link} from "react-router-dom";
 
 export const Comments = ({postId}) => {
     const [comments, setComments] = useState([])
@@ -112,7 +113,9 @@ export const Comments = ({postId}) => {
                     return (
                         <SC.CommentBox key={comment._id}>
                             <SC.Header>
-                                <SC.CommentAuthor>{comment.author}</SC.CommentAuthor>
+                                <SC.CommentAuthor>
+                                    <Link to={`/user/${comment.login}`}>{comment.author}</Link>
+                                </SC.CommentAuthor>
                                 <SC.ButtonContainer>
                                     {canEdit && (
                                         <>

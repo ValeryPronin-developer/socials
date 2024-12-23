@@ -15,6 +15,7 @@ import {UsersPage} from "./pages/users/index.jsx";
 import {FriendsPage} from "./pages/friends/index.jsx";
 import {AuthPage} from "./pages/auth/index.jsx";
 import {RegistrationPage} from "./pages/registration/index.jsx";
+import {ProfileUserPage} from "./pages/profileUser/index.jsx";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <App/>,
+            },
+            {
+                path: 'user/:userId',
+                element: <ProfileUserPage/>,
             },
             {
                 path: 'posts',

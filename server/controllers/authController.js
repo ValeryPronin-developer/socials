@@ -36,15 +36,6 @@ class AuthController {
             const { email, password, friends } = req.body
             const user = await UserModel.findOne({ email })
 
-            // if (email === "admin@admin" && password === "admin") {
-            //     const token = jwt.sign(
-            //         { id: "admin", isAdmin: true },
-            //         process.env.JWT_SECRET,
-            //         { expiresIn: '1h' }
-            //     )
-            //     return res.status(200).json({ token, name: "Admin", isAdmin: true, email, friends })
-            // }
-
             if (!user) {
                 return res.status(404).json({ message: 'Пользователь не найден' })
             }
