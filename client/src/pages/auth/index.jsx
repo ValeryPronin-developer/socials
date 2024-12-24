@@ -1,19 +1,20 @@
 import React, {useState} from "react"
-import {useApiRequest} from "../../hooks/useApiRequest.js"
-import * as SC from "./styles"
 import {useNavigate} from "react-router-dom"
 import {useDispatch, useSelector} from "react-redux"
+import {useApiRequest} from "../../hooks/useApiRequest.js"
 import {login} from "../../redux/slices/userSlices.js"
 import {Loading} from "../../components/ui/Loading/index.jsx";
+import * as SC from "./styles"
 
 export const AuthPage = () => {
     const [formData, setFormData] = useState({email: "", password: ""})
     const [rememberMe, setRememberMe] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
-    const apiRequest = useApiRequest()
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+
     const user = useSelector((state) => state.user.user)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const apiRequest = useApiRequest()
 
     const handleChange = (e) => {
         const {name, value} = e.target

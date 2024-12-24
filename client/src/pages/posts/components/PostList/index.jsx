@@ -1,17 +1,17 @@
 import React, {useState} from "react"
-import {useApiRequest} from '../../../../hooks/useApiRequest.js'
-import * as SC from './styles.js'
+import {Link} from "react-router-dom"
 import {useSelector} from "react-redux"
-import {Comments} from "./components/Comments/index.jsx";
-import {Link} from "react-router-dom";
+import {useApiRequest} from '../../../../hooks/useApiRequest.js'
+import {Comments} from "./components/Comments/index.jsx"
+import * as SC from './styles.js'
 
 export const PostList = ({postList, updatePostList, show}) => {
     const [editMode, setEditMode] = useState(null)
     const [editText, setEditText] = useState('')
     const [viewMode, setViewMode] = useState('all')
 
-    const apiRequest = useApiRequest()
     const user = useSelector((state) => state.user.user)
+    const apiRequest = useApiRequest()
 
     const filteredPosts = postList?.filter((post) => {
         if (viewMode === 'all') {
@@ -52,11 +52,6 @@ export const PostList = ({postList, updatePostList, show}) => {
     }
 
     const savePostItem = async (id) => {
-        if (!editText.trim()) {
-            alert("Заголовок не может быть пустым")
-            return
-        }
-
         try {
             const res = await apiRequest({
                 url: "http://localhost:3002/api/posts/update",
@@ -133,7 +128,10 @@ export const PostList = ({postList, updatePostList, show}) => {
                                         {canEdit && (
                                             <>
                                                 {editMode === item._id ? (
-                                                    <button onClick={() => savePostItem(item._id)}>
+                                                    <button
+                                                        onClick={() => savePostItem(item._id)}
+                                                        disabled={!editText.trim()}
+                                                    >
                                                         Сохранить
                                                     </button>
                                                 ) : (
@@ -149,7 +147,9 @@ export const PostList = ({postList, updatePostList, show}) => {
                                             </>
                                         )}
                                         {canEditOrDelete && (
-                                            <SC.Button onClick={() => deletePostItem(item._id)}>X</SC.Button>
+                                            <SC.Button onClick={() => deletePostItem(item._id)}>
+                                                X
+                                            </SC.Button>
                                         )}
                                     </SC.ButtonContainer>
                                 </SC.Header>

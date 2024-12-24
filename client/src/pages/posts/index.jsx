@@ -1,10 +1,10 @@
-import React, {useState, useCallback, useEffect,} from 'react';
+import React, {useState, useCallback, useEffect,} from 'react'
+import {useSelector} from "react-redux"
+import {useGetPostList} from "../../hooks/useGetPostList.js"
+import {AddPostItem} from "./components/AddPostItem"
 import {PostList} from './components/PostList'
-import {useGetPostList} from "../../hooks/useGetPostList.js";
-import {AddPostItem} from "./components/AddPostItem";
-import {Container} from "../../components/Container";
-import * as SC from "./styles.js";
-import {useSelector} from "react-redux";
+import {Container} from "../../components/Container"
+import * as SC from "./styles.js"
 
 export const PostsPage = () => {
     const [postList, setPostList] = useState([])

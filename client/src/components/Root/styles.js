@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import {NavLink} from "react-router-dom";
+import styled from "styled-components"
+import {NavLink} from "react-router-dom"
 
 export const Menu = styled.div`
     max-width: 800px;

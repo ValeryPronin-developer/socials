@@ -1,4 +1,4 @@
-import styled, {createGlobalStyle, keyframes} from 'styled-components';
+import styled, {createGlobalStyle, keyframes} from 'styled-components'
 
 const shapeAnimation = keyframes`
     0% { transform: translateY(0) rotate(0deg); }

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
-import * as SC from './styles.js'
-import {useApiRequest} from "../../../../../../hooks/useApiRequest.js"
 import {useSelector} from "react-redux"
-import {Link} from "react-router-dom";
+import {Link} from "react-router-dom"
+import {useApiRequest} from "../../../../../../hooks/useApiRequest.js"
+import * as SC from './styles.js'
 
 export const Comments = ({postId}) => {
     const [comments, setComments] = useState([])
@@ -10,8 +10,8 @@ export const Comments = ({postId}) => {
     const [editMode, setEditMode] = useState(null)
     const [editText, setEditText] = useState('')
 
-    const apiRequest = useApiRequest()
     const user = useSelector((state) => state.user.user)
+    const apiRequest = useApiRequest()
 
     useEffect(() => {
         const fetchComments = async () => {
@@ -103,7 +103,7 @@ export const Comments = ({postId}) => {
     }
 
     return (
-        <SC.Container>
+        <SC.ContainerComment>
             <SC.Title>Комментарии</SC.Title>
             {comments.length > 0 ? (
                 comments.map((comment) => {
@@ -113,9 +113,9 @@ export const Comments = ({postId}) => {
                     return (
                         <SC.CommentBox key={comment._id}>
                             <SC.Header>
-                                <SC.CommentAuthor>
+                                <div>
                                     <Link to={`/user/${comment.login}`}>{comment.author}</Link>
-                                </SC.CommentAuthor>
+                                </div>
                                 <SC.ButtonContainer>
                                     {canEdit && (
                                         <>
@@ -139,7 +139,9 @@ export const Comments = ({postId}) => {
                                         </>
                                     )}
                                     {canEditOrDelete && (
-                                        <SC.Button onClick={() => deleteCommentItem(comment._id)}>X</SC.Button>
+                                        <SC.Button onClick={() => deleteCommentItem(comment._id)}>
+                                            X
+                                        </SC.Button>
                                     )}
                                 </SC.ButtonContainer>
                             </SC.Header>
@@ -169,6 +171,6 @@ export const Comments = ({postId}) => {
                     <button onClick={handleAddComment} disabled={!newComment.trim()}>Добавить</button>
                 </>
             )}
-        </SC.Container>
+        </SC.ContainerComment>
     )
 }

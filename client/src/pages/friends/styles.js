@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const Title = styled.h2`
     font-size: 36px;
@@ -6,7 +6,7 @@ export const Title = styled.h2`
     margin: 10px 10px 46px 10px;
 `
 
-export const NoFriendsMessage = styled.p`
+export const NoFriendsMessage = styled.div`
     color: gray;
     text-align: center;
     margin-top: 20px;

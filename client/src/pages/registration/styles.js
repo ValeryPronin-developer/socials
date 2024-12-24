@@ -46,7 +46,7 @@ export const ShowPasswordButton = styled.button`
     }
 `
 
-export const ErrorText = styled.p`
+export const ErrorText = styled.div`
     color: red;
     font-size: 12px;
     margin-top: 1px;

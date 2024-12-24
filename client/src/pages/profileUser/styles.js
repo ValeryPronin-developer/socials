@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Title = styled.h2`
     font-size: 36px;
@@ -39,6 +39,7 @@ export const UserName = styled.div`
 export const UserEmail = styled.div`
     color: #666;
 `
+
 export const SectionTitle = styled.div`
     color: #666;
 `

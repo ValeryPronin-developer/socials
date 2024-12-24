@@ -1,7 +1,7 @@
 import React, {useState} from "react"
+import {useSelector} from "react-redux"
 import {useApiRequest} from '../../../../hooks/useApiRequest.js'
 import * as SC from './styles.js'
-import {useSelector} from "react-redux"
 
 export const AddPostItem = ({updatePostList}) => {
     const [title, setTitle] = useState('')
@@ -36,7 +36,10 @@ export const AddPostItem = ({updatePostList}) => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
             />
-            <SC.Select value={visibility} onChange={(e) => setVisibility(e.target.value)}>
+            <SC.Select
+                value={visibility}
+                onChange={(e) => setVisibility(e.target.value)}
+            >
                 <option value="public">Публичный</option>
                 <option value="friends">Только для друзей</option>
             </SC.Select>
