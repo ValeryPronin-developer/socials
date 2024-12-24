@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from 'react'
-import * as SC from './styles.js'
+import {useDispatch, useSelector} from "react-redux"
+import {Link} from "react-router-dom"
+import {updateFriends} from "../../redux/slices/userSlices.js"
 import {useApiRequest} from '../../hooks/useApiRequest.js'
-import {Container} from "../../components/Container/index.jsx";
-import {useDispatch, useSelector} from "react-redux";
-import {updateFriends} from "../../redux/slices/userSlices.js";
-import {Loading} from "../../components/ui/Loading/index.jsx";
-import {Link} from "react-router-dom";
+import {Container} from "../../components/Container/index.jsx"
+import {Loading} from "../../components/ui/Loading/index.jsx"
+import * as SC from './styles.js'
 
 export const UsersPage = () => {
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    const apiRequest = useApiRequest()
     const userAuth = useSelector((state) => state.user.user)
+    const apiRequest = useApiRequest()
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -83,11 +83,15 @@ export const UsersPage = () => {
                                 </SC.UserName>
                                 {userAuth && userAuth.email !== user.email && (
                                     userAuth.friends?.includes(user.email) ? (
-                                        <SC.RemoveFriendButton onClick={() => handleRemoveFriend(user.email)}>
+                                        <SC.RemoveFriendButton
+                                            onClick={() => handleRemoveFriend(user.email)}
+                                        >
                                             Удалить из друзей
                                         </SC.RemoveFriendButton>
                                     ) : (
-                                        <SC.AddFriendButton onClick={() => handleAddFriend(user.email)}>
+                                        <SC.AddFriendButton
+                                            onClick={() => handleAddFriend(user.email)}
+                                        >
                                             Добавить в друзья
                                         </SC.AddFriendButton>
                                     )

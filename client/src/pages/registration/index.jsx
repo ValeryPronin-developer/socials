@@ -1,7 +1,7 @@
 import React, {useState} from "react"
+import {useNavigate} from "react-router-dom"
 import {useApiRequest} from "../../hooks/useApiRequest.js"
 import * as SC from "./styles"
-import {useNavigate} from "react-router-dom";
 
 export const RegistrationPage = () => {
     const [formData, setFormData] = useState({name: "", email: "", password: ""})

@@ -1,21 +1,21 @@
-import React from 'react';
+import React from 'react'
 import {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'
 import {
     createBrowserRouter,
     RouterProvider
-} from "react-router-dom";
-import {store} from "./redux/store.js";
+} from "react-router-dom"
 import {Provider} from 'react-redux'
-import './index.css'
+import {store} from "./redux/store.js"
+import {Root} from "./components/Root/index.jsx"
+import {PostsPage} from "./pages/posts/index.jsx"
+import {UsersPage} from "./pages/users/index.jsx"
+import {FriendsPage} from "./pages/friends/index.jsx"
+import {AuthPage} from "./pages/auth/index.jsx"
+import {RegistrationPage} from "./pages/registration/index.jsx"
+import {ProfileUserPage} from "./pages/profileUser/index.jsx"
 import App from './App.jsx'
-import {PostsPage} from "./pages/posts/index.jsx";
-import {Root} from "./components/Root/index.jsx";
-import {UsersPage} from "./pages/users/index.jsx";
-import {FriendsPage} from "./pages/friends/index.jsx";
-import {AuthPage} from "./pages/auth/index.jsx";
-import {RegistrationPage} from "./pages/registration/index.jsx";
-import {ProfileUserPage} from "./pages/profileUser/index.jsx";
+import './index.css'
 
 const router = createBrowserRouter([
     {

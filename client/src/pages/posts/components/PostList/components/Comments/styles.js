@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-export const Container = styled.div`
+export const ContainerComment = styled.div`
     padding: 20px;
     border-top: 1px solid #555;
 `
 
-export const Title = styled.h3`
+export const Title = styled.h2`
     font-size: 1.3em;
     margin-block: 10px;
 `
@@ -39,10 +39,6 @@ export const EditInput = styled.textarea`
     &:focus {
         border-color: #535bf2;
     }
-`
-
-export const CommentAuthor = styled.strong`
-    
 `
 
 export const ButtonContainer = styled.div`

@@ -1,14 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
-import * as SC from './styles.js'
+import {useDispatch, useSelector} from "react-redux"
 import {useApiRequest} from '../../hooks/useApiRequest.js'
+import {useGetPostList} from "../../hooks/useGetPostList.js"
+import {updateFriends} from "../../redux/slices/userSlices.js"
 import {Container} from "../../components/Container/index.jsx"
 import {Loading} from "../../components/ui/Loading/index.jsx"
-import {PostList} from "../posts/components/PostList/index.jsx"
 import {AddPostItem} from "../posts/components/AddPostItem/index.jsx"
-import {useGetPostList} from "../../hooks/useGetPostList.js"
-import {useDispatch, useSelector} from "react-redux"
-import {updateFriends} from "../../redux/slices/userSlices.js"
+import {PostList} from "../posts/components/PostList/index.jsx"
+import * as SC from './styles.js'
 
 export const ProfileUserPage = () => {
     const [user, setUser] = useState(null)
@@ -16,10 +16,10 @@ export const ProfileUserPage = () => {
     const [error, setError] = useState(null)
     const [userPosts, setUserPosts] = useState([])
 
+    const userAuth = useSelector((state) => state.user.user)
     const {userId} = useParams()
     const apiRequest = useApiRequest()
     const getPostList = useGetPostList()
-    const userAuth = useSelector((state) => state.user.user)
     const dispatch = useDispatch()
 
     const updatePostList = useCallback(() => {
