@@ -29,6 +29,7 @@ export const Root = () => {
             ? "localStorage"
             : "sessionStorage"
         window[storageKey].removeItem("user")
+        localStorage.removeItem("rememberMe")
         dispatch(logout())
     }
 
