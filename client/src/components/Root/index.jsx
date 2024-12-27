@@ -1,11 +1,18 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {Outlet} from "react-router-dom"
+import {toast} from "react-toastify"
 import {login, logout} from "../../redux/slices/userSlices.js"
+import {setTheme} from "../../redux/slices/themeSlice.js";
 import {Container} from "../Container/index.jsx"
+import LightIcon from '@mui/icons-material/LightMode'
+import SystemIcon from '@mui/icons-material/SettingsSuggest'
+import DarkIcon from '@mui/icons-material/Nightlight'
+import ProfileIcon from '@mui/icons-material/AccountCircleSharp'
 import * as SC from './styles.js'
 
 export const Root = () => {
+    const theme = useSelector((state) => state.theme.theme)
     const user = useSelector((state) => state.user.user)
     const dispatch = useDispatch()
 
@@ -24,6 +31,11 @@ export const Root = () => {
         }
     }, [dispatch, user])
 
+    const handleThemeChange = (selectedTheme) => {
+        dispatch(setTheme(selectedTheme))
+        toast.info(`Тема изменена на: ${selectedTheme}`)
+    }
+
     const handleLogout = () => {
         const storageKey = localStorage.getItem("rememberMe") === "true"
             ? "localStorage"
@@ -39,15 +51,17 @@ export const Root = () => {
                 <SC.Menu>
                     <SC.MenuContainer>
                         <SC.MenuItem to={'/'}>Главная</SC.MenuItem>
-                        {user && <SC.MenuItem to={`/user/${user.email}`}>Профиль</SC.MenuItem>}
-                        <SC.MenuItem to={'/posts'}>Посты</SC.MenuItem>
-                        <SC.MenuItem to={'/users'}>Пользователи</SC.MenuItem>
+                        {user && <SC.MenuItem to={'/posts'}>Посты</SC.MenuItem>}
+                        {user && <SC.MenuItem to={'/users'}>Пользователи</SC.MenuItem>}
                         {user && <SC.MenuItem to={'/friends'}>Друзья</SC.MenuItem>}
                     </SC.MenuContainer>
                     <SC.AuthContainer>
                         {user ? (
                             <>
-                                <div>{user.name}</div>
+                                <SC.MenuItem to={`/user/${user.email}`}>
+                                    {/*{user.name}*/}
+                                    <ProfileIcon/>
+                                </SC.MenuItem>
                                 <button onClick={handleLogout}>Выйти</button>
                             </>
                         ) : (
@@ -57,6 +71,26 @@ export const Root = () => {
                                 <SC.MenuItem to={'/registration'}>Регистрация</SC.MenuItem>
                             </>
                         )}
+                        <SC.ThemeContainer>
+                            <SC.ThemeButton
+                                isActive={theme === 'light'}
+                                onClick={() => handleThemeChange('light')}
+                            >
+                                <LightIcon/>
+                            </SC.ThemeButton>
+                            <SC.ThemeButton
+                                isActive={theme === 'system'}
+                                onClick={() => handleThemeChange('system')}
+                            >
+                                <SystemIcon/>
+                            </SC.ThemeButton>
+                            <SC.ThemeButton
+                                isActive={theme === 'dark'}
+                                onClick={() => handleThemeChange('dark')}
+                            >
+                                <DarkIcon/>
+                            </SC.ThemeButton>
+                        </SC.ThemeContainer>
                     </SC.AuthContainer>
                 </SC.Menu>
             </Container>

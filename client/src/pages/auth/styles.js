@@ -20,18 +20,18 @@ export const Input = styled.input`
 `
 
 export const ShowPasswordButton = styled.button`
-    position: absolute;
-    right: 6px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
+    position: absolute !important;
+    right: 6px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: none !important;
+    border: none !important;
     
     &:focus {
-        outline: none;
+        outline: none !important;
     }
 
     &:hover {
-        color: #535bf2;
+        color: #535bf2 !important;
     }
 `

@@ -1,6 +1,7 @@
 import React, {useState} from "react"
 import {Link} from "react-router-dom"
 import {useSelector} from "react-redux"
+import {toast} from 'react-toastify'
 import {useApiRequest} from '../../../../hooks/useApiRequest.js'
 import {Comments} from "./components/Comments/index.jsx"
 import * as SC from './styles.js'
@@ -46,8 +47,10 @@ export const PostList = ({postList, updatePostList, show}) => {
             })
 
             updatePostList()
+            toast.success("Пост успешно удален!")
         } catch (e) {
             console.error(e)
+            toast.error("Ошибка при удалении поста!")
         }
     }
 
@@ -60,14 +63,16 @@ export const PostList = ({postList, updatePostList, show}) => {
             })
 
             if (!res) {
-                alert('Ошибка при обновлении')
+                toast.error('Ошибка при обновлении')
                 return
             }
 
             setEditMode(null)
             updatePostList()
+            toast.success("Пост обновлен")
         } catch (e) {
             console.error(e)
+            toast.error('Произошла ошибка при обновлении поста')
         }
     }
 
@@ -162,7 +167,7 @@ export const PostList = ({postList, updatePostList, show}) => {
                                     <SC.PostText>{item.title}</SC.PostText>
                                 )}
                                 <SC.Date>{formatDate(item.createdAt)}</SC.Date>
-                                <Comments postId={item._id} />
+                                <Comments postId={item._id}/>
                             </SC.PostItem>
                         )
                     })}

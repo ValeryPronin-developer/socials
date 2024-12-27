@@ -55,23 +55,23 @@ export const UserName = styled.div`
 `
 
 export const AddFriendButton = styled.button`
-    font-size: 14px;
-    border: none;
-    transition: background 0.3s;
+    font-size: 14px !important;
+    border: none !important;
+    transition: background 0.3s !important;
 
     &:hover {
-        background: #646cff;
+        background: #646cff !important;
     }
 `
 
 export const RemoveFriendButton = styled.button`
-    font-size: 14px;
-    background-color: #ff4d4f;
-    color: #fff;
-    border: none;
-    transition: background 0.3s;
+    font-size: 14px !important;
+    background-color: #ff4d4f !important;
+    color: #fff !important;
+    border: none !important;
+    transition: background 0.3s !important;
 
     &:hover {
-        background-color: #ff7875;
+        background-color: #ff7875 !important;
     }
 `

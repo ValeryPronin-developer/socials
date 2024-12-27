@@ -11,7 +11,7 @@ export const InputWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 70px;
+    min-height: 70px;
     
     &:nth-child(2n) {
         margin-left: auto;
@@ -30,19 +30,19 @@ export const Input = styled.input`
 `
 
 export const ShowPasswordButton = styled.button`
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: none !important;
+    border: none !important;
 
     &:focus {
-        outline: none;
+        outline: none !important;
     }
 
     &:hover {
-        color: #535bf2;
+        color: #535bf2 !important;
     }
 `
 

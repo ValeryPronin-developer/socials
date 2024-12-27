@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {Link} from "react-router-dom"
+import {toast, ToastContainer} from "react-toastify"
+import {useToastTheme} from "../../hooks/useToastTheme.js"
 import {useApiRequest} from '../../hooks/useApiRequest.js'
 import {updateFriends} from '../../redux/slices/userSlices.js'
 import {Container} from '../../components/Container/index.jsx'
 import {Loading} from "../../components/ui/Loading/index.jsx"
+import Person from '../../../public/person.webp'
 import * as SC from './styles.js'
 
 export const FriendsPage = () => {
@@ -13,6 +16,7 @@ export const FriendsPage = () => {
     const [error, setError] = useState(null)
 
     const userAuth = useSelector((state) => state.user.user)
+    const toastTheme = useToastTheme()
     const apiRequest = useApiRequest()
     const dispatch = useDispatch()
 
@@ -45,8 +49,10 @@ export const FriendsPage = () => {
 
             dispatch(updateFriends(userAuth.friends.filter((email) => email !== friendEmail)))
             setFriends(friends.filter((friend) => friend.email !== friendEmail))
+            toast.success("Пользователь удален из друзей")
         } catch (e) {
             console.error(e)
+            toast.error("Произошла ошибка при удалении из друзей")
         }
     }
 
@@ -69,7 +75,7 @@ export const FriendsPage = () => {
                         <SC.UserCard key={friend._id}>
                             <SC.UserInfo>
                                 <SC.AvatarPlaceholder>
-                                    <img src="../../../public/person.webp" alt="avatar"/>
+                                    <img src={Person} alt="avatar"/>
                                 </SC.AvatarPlaceholder>
                                 <SC.UserDetails>
                                     <SC.UserName>
@@ -86,6 +92,13 @@ export const FriendsPage = () => {
                     ))}
                 </SC.UserList>
             )}
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={true}
+                closeButton={false}
+                theme={toastTheme}
+            />
         </Container>
     )
 }

@@ -1,6 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux"
+import {toast, ToastContainer} from "react-toastify"
+import {useToastTheme} from "../../hooks/useToastTheme.js"
 import {useApiRequest} from '../../hooks/useApiRequest.js'
 import {useGetPostList} from "../../hooks/useGetPostList.js"
 import {updateFriends} from "../../redux/slices/userSlices.js"
@@ -8,6 +10,7 @@ import {Container} from "../../components/Container/index.jsx"
 import {Loading} from "../../components/ui/Loading/index.jsx"
 import {AddPostItem} from "../posts/components/AddPostItem/index.jsx"
 import {PostList} from "../posts/components/PostList/index.jsx"
+import Person from '../../../public/person.webp'
 import * as SC from './styles.js'
 
 export const ProfileUserPage = () => {
@@ -17,6 +20,7 @@ export const ProfileUserPage = () => {
     const [userPosts, setUserPosts] = useState([])
 
     const userAuth = useSelector((state) => state.user.user)
+    const toastTheme = useToastTheme()
     const {userId} = useParams()
     const apiRequest = useApiRequest()
     const getPostList = useGetPostList()
@@ -58,8 +62,10 @@ export const ProfileUserPage = () => {
             })
 
             dispatch(updateFriends([...userAuth.friends, friendEmail]))
+            toast.success("Пользователь добавлен в друзья")
         } catch (e) {
             console.error(e)
+            toast.error("Произошла ошибка при добавлении в друзья")
         }
     }
 
@@ -72,8 +78,10 @@ export const ProfileUserPage = () => {
             })
 
             dispatch(updateFriends(userAuth.friends.filter((email) => email !== friendEmail)))
+            toast.success("Пользователь удален из друзей")
         } catch (e) {
             console.error(e)
+            toast.error("Произошла ошибка при удалении из друзей")
         }
     }
 
@@ -90,7 +98,7 @@ export const ProfileUserPage = () => {
             <SC.Title>Профиль пользователя</SC.Title>
             <SC.ProfileContainer>
                 <SC.AvatarPlaceholder>
-                    <img src="../../../public/person.webp" alt="avatar"/>
+                    <img src={Person} alt="avatar"/>
                 </SC.AvatarPlaceholder>
                 <SC.UserDetails>
                     <SC.UserName>{user.name}</SC.UserName>
@@ -116,6 +124,13 @@ export const ProfileUserPage = () => {
             ) : (
                 <SC.Placeholder>Пока нет постов</SC.Placeholder>
             )}
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={true}
+                closeButton={false}
+                theme={toastTheme}
+            />
         </Container>
     )
 }

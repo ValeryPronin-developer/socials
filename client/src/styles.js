@@ -23,7 +23,6 @@ export const GlobalStyle = createGlobalStyle`
 `
 
 export const WelcomeContainer = styled.div`
-    
     height: calc(100vh - 150px);
     width: 100vw;
     display: flex;

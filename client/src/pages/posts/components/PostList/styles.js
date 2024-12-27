@@ -60,13 +60,13 @@ export const ButtonContainer = styled.div`
 `
 
 export const Button = styled.button`
-    border: none;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-    background-color: #e74c3c;
+    border: none !important;
+    border-radius: 4px !important;
+    transition: background-color 0.3s !important;
+    background-color: #e74c3c !important;
 
     &:hover {
-        background-color: #c0392b;
+        background-color: #c0392b !important;
     }
 `
 

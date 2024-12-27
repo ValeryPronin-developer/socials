@@ -1,5 +1,6 @@
 import React, {useState} from "react"
 import {useSelector} from "react-redux"
+import {toast} from "react-toastify"
 import {useApiRequest} from '../../../../hooks/useApiRequest.js'
 import * as SC from './styles.js'
 
@@ -23,8 +24,16 @@ export const AddPostItem = ({updatePostList}) => {
             updatePostList()
             setTitle('')
             setVisibility('public')
+            toast.success("Пост добавлен")
         } catch (e) {
             console.error(e)
+            toast.error("Ошибка при добавлении комментария")
+        }
+    }
+
+    const handleChange = (e) => {
+        if (e.target.value.length <= 300) {
+            setTitle(e.target.value)
         }
     }
 
@@ -34,14 +43,14 @@ export const AddPostItem = ({updatePostList}) => {
                 type="text"
                 placeholder="Пост"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={handleChange}
             />
             <SC.Select
                 value={visibility}
                 onChange={(e) => setVisibility(e.target.value)}
             >
                 <option value="public">Публичный</option>
-                <option value="friends">Только для друзей</option>
+                <option value="friends">Приватный</option>
             </SC.Select>
             <button disabled={!title.trim()}>Добавить</button>
         </SC.Form>

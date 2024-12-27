@@ -2,9 +2,12 @@ import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {Link} from "react-router-dom"
 import {updateFriends} from "../../redux/slices/userSlices.js"
+import {toast, ToastContainer} from "react-toastify"
 import {useApiRequest} from '../../hooks/useApiRequest.js'
+import {useToastTheme} from "../../hooks/useToastTheme.js"
 import {Container} from "../../components/Container/index.jsx"
 import {Loading} from "../../components/ui/Loading/index.jsx"
+import Person from '../../../public/person.webp'
 import * as SC from './styles.js'
 
 export const UsersPage = () => {
@@ -13,6 +16,7 @@ export const UsersPage = () => {
     const [error, setError] = useState(null)
 
     const userAuth = useSelector((state) => state.user.user)
+    const toastTheme = useToastTheme()
     const apiRequest = useApiRequest()
     const dispatch = useDispatch()
 
@@ -40,8 +44,10 @@ export const UsersPage = () => {
             })
 
             dispatch(updateFriends([...userAuth.friends, friendEmail]))
+            toast.success("Пользователь добавлен в друзья")
         } catch (e) {
             console.error(e)
+            toast.error("Произошла ошибка при добавлении в друзья")
         }
     }
 
@@ -54,8 +60,10 @@ export const UsersPage = () => {
             })
 
             dispatch(updateFriends(userAuth.friends.filter((email) => email !== friendEmail)))
+            toast.success("Пользователь удален из друзей")
         } catch (e) {
             console.error(e)
+            toast.error("Произошла ошибка при удалении из друзей")
         }
     }
 
@@ -75,7 +83,7 @@ export const UsersPage = () => {
                     <SC.UserCard key={user._id}>
                         <SC.UserInfo>
                             <SC.AvatarPlaceholder>
-                                <img src="../../../public/person.webp" alt="avatar"/>
+                                <img src={Person} alt="avatar"/>
                             </SC.AvatarPlaceholder>
                             <SC.UserDetails>
                                 <SC.UserName>
@@ -101,6 +109,13 @@ export const UsersPage = () => {
                     </SC.UserCard>
                 ))}
             </SC.UserList>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={true}
+                closeButton={false}
+                theme={toastTheme}
+            />
         </Container>
     )
 }
