@@ -45,24 +45,24 @@ export const SectionTitle = styled.div`
 `
 
 export const AddFriendButton = styled.button`
-    margin-left: 30px;
-    border: none;
-    transition: background 0.3s;
+    margin-left: 30px !important;
+    border: none !important;
+    transition: background 0.3s !important;
 
     &:hover {
-        background: #646cff;
+        background: #646cff !important;
     }
 `
 
 export const RemoveFriendButton = styled.button`
-    margin-left: 30px;
-    background-color: #ff4d4f;
-    color: #fff;
-    border: none;
-    transition: background 0.3s;
+    margin-left: 30px !important;
+    background-color: #ff4d4f !important;
+    color: #fff !important;
+    border: none !important;
+    transition: background 0.3s !important;
 
     &:hover {
-        background-color: #ff7875;
+        background-color: #ff7875 !important;
     }
 `
 

@@ -5,42 +5,39 @@ import * as SC from "./styles"
 
 export const RegistrationPage = () => {
     const [formData, setFormData] = useState({name: "", email: "", password: ""})
-    const [errors, setErrors] = useState({name: "", email: "", password: ""})
+    const [errors, setErrors] = useState({name: [], email: [], password: []})
     const [showPassword, setShowPassword] = useState(false)
     const apiRequest = useApiRequest()
     const navigate = useNavigate()
 
     const validateForm = () => {
-        let newErrors = {}
+        let newErrors = {name: [], email: [], password: []}
 
-        if (formData.name.trim() === "") {
-            newErrors.name = "Имя пользователя обязательно"
-        } else if (formData.name.length < 2) {
-            newErrors.name = "Имя должно содержать минимум 2 символа"
-        } else if (!/^[А-ЯЁA-Z]/.test(formData.name.trim())) {
-            newErrors.name = "Имя должно начинаться с заглавной буквы"
+        if (formData.name.length < 2) {
+            newErrors.name.push("Минимум 2 символа")
+        }
+        if (!/^[А-ЯЁA-Z]/.test(formData.name.trim())) {
+            newErrors.name.push("Должно начинаться с заглавной буквы")
         }
 
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,5}$/
-        if (formData.email.trim() === "") {
-            newErrors.email = "Email обязателен"
-        } else if (!emailRegex.test(formData.email)) {
-            newErrors.email = "Некорректный формат email"
+        if (!emailRegex.test(formData.email)) {
+            newErrors.email.push("Некорректный формат")
         }
 
-        if (formData.password.trim() === "") {
-            newErrors.password = "Пароль обязателен"
-        } else if (formData.password.length < 4) {
-            newErrors.password = "Пароль должен содержать минимум 4 символа"
-        } else if (!/[A-Z]/.test(formData.password)) {
-            newErrors.password = "Пароль должен содержать хотя бы одну заглавную букву"
-        } else if (!/\d/.test(formData.password)) {
-            newErrors.password = "Пароль должен содержать хотя бы одну цифру"
+        if (formData.password.length < 4) {
+            newErrors.password.push("Минимум 4 символа")
+        }
+        if (!/[A-Z]/.test(formData.password)) {
+            newErrors.password.push("Хотя бы одна заглавная буква")
+        }
+        if (!/\d/.test(formData.password)) {
+            newErrors.password.push("Хотя бы одна цифра")
         }
 
         setErrors(newErrors)
 
-        return Object.keys(newErrors).length === 0
+        return Object.keys(newErrors).every((key) => newErrors[key].length === 0)
     }
 
     const handleChange = (e) => {
@@ -81,7 +78,14 @@ export const RegistrationPage = () => {
                     value={formData.name}
                     onChange={handleChange}
                 />
-                {errors.name && <SC.ErrorText>{errors.name}</SC.ErrorText>}
+                {errors.name.length > 0 && (
+                    <SC.ErrorText>
+                        <div>Имя:</div>
+                        {errors.name.map((error, index) => (
+                            <div key={index}>- {error}</div>
+                        ))}
+                    </SC.ErrorText>
+                )}
             </SC.InputWrapper>
             <SC.InputWrapper>
                 <SC.Input
@@ -91,7 +95,14 @@ export const RegistrationPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                 />
-                {errors.email && <SC.ErrorText>{errors.email}</SC.ErrorText>}
+                {errors.email.length > 0 && (
+                    <SC.ErrorText>
+                        <div>Email:</div>
+                        {errors.email.map((error, index) => (
+                            <div key={index}>- {error}</div>
+                        ))}
+                    </SC.ErrorText>
+                )}
             </SC.InputWrapper>
             <SC.InputWrapper>
                 <div style={{position: "relative"}}>
@@ -109,7 +120,14 @@ export const RegistrationPage = () => {
                         {showPassword ? "Скрыть" : "Показать"}
                     </SC.ShowPasswordButton>
                 </div>
-                {errors.password && <SC.ErrorText>{errors.password}</SC.ErrorText>}
+                {errors.password.length > 0 && (
+                    <SC.ErrorText>
+                        <div>Пароль:</div>
+                        {errors.password.map((error, index) => (
+                            <div key={index}>- {error}</div>
+                        ))}
+                    </SC.ErrorText>
+                )}
             </SC.InputWrapper>
             <button disabled={!isFormValid}>Зарегистрироваться</button>
         </SC.Form>

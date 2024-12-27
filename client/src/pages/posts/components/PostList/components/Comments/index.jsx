@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useSelector} from "react-redux"
 import {Link} from "react-router-dom"
+import {toast} from "react-toastify"
 import {useApiRequest} from "../../../../../../hooks/useApiRequest.js"
 import * as SC from './styles.js'
 
@@ -20,6 +21,7 @@ export const Comments = ({postId}) => {
                 setComments(data)
             } catch (error) {
                 console.error('Ошибка при загрузке комментариев:', error)
+                toast.error("Ошибка при загрузке комментариев")
             }
         }
 
@@ -41,8 +43,10 @@ export const Comments = ({postId}) => {
 
             setComments((prev) => [...prev, data.comment])
             setNewComment('')
+            toast.success("Комментарий добавлен")
         } catch (error) {
             console.error('Ошибка при добавлении комментария:', error)
+            toast.error("Ошибка при добавлении комментария")
         }
     }
 
@@ -55,17 +59,14 @@ export const Comments = ({postId}) => {
             })
 
             setComments((prev) => prev.filter((comment) => comment._id !== id))
+            toast.success("Комментарий удалён")
         } catch (e) {
             console.error(e)
+            toast.error("Ошибка при удалении комментария")
         }
     }
 
     const saveCommentItem = async (id) => {
-        if (!editText.trim()) {
-            alert("Заголовок не может быть пустым")
-            return
-        }
-
         try {
             const res = await apiRequest({
                 url: "http://localhost:3002/api/comments/update",
@@ -74,7 +75,7 @@ export const Comments = ({postId}) => {
             })
 
             if (!res) {
-                alert('Ошибка при обновлении')
+                toast.error("Ошибка при обновлении комментария")
                 return
             }
 
@@ -85,8 +86,10 @@ export const Comments = ({postId}) => {
             )
 
             setEditMode(null)
+            toast.success("Комментарий обновлён")
         } catch (e) {
             console.error(e)
+            toast.error("Ошибка при обновлении комментария")
         }
     }
 
@@ -100,6 +103,18 @@ export const Comments = ({postId}) => {
             hour: "2-digit",
             minute: "2-digit",
         })
+    }
+
+    const handleNewCommentChange = (e) => {
+        if (e.target.value.length <= 100) {
+            setNewComment(e.target.value)
+        }
+    }
+
+    const handleEditTextChange = (e) => {
+        if (e.target.value.length <= 100) {
+            setEditText(e.target.value)
+        }
     }
 
     return (
@@ -148,7 +163,7 @@ export const Comments = ({postId}) => {
                             {editMode === comment._id ? (
                                 <SC.EditInput
                                     value={editText}
-                                    onChange={(e) => setEditText(e.target.value)}
+                                    onChange={handleEditTextChange}
                                 />
                             ) : (
                                 <SC.CommentContent>{comment.content}</SC.CommentContent>
@@ -165,7 +180,7 @@ export const Comments = ({postId}) => {
                     <SC.Input
                         type="text"
                         value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
+                        onChange={handleNewCommentChange}
                         placeholder="Введите комментарий"
                     />
                     <button onClick={handleAddComment} disabled={!newComment.trim()}>Добавить</button>

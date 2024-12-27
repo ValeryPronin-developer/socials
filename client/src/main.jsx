@@ -15,11 +15,12 @@ import {AuthPage} from "./pages/auth/index.jsx"
 import {RegistrationPage} from "./pages/registration/index.jsx"
 import {ProfileUserPage} from "./pages/profileUser/index.jsx"
 import App from './App.jsx'
+import {ROUTES} from './constants.js'
 import './index.css'
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: ROUTES.ROOT,
         element: <Root/>,
         children: [
             {
@@ -27,27 +28,27 @@ const router = createBrowserRouter([
                 element: <App/>,
             },
             {
-                path: 'user/:userId',
+                path: ROUTES.USER_PROFILE,
                 element: <ProfileUserPage/>,
             },
             {
-                path: 'posts',
+                path: ROUTES.POSTS,
                 element: <PostsPage/>,
             },
             {
-                path: 'users',
+                path: ROUTES.USERS,
                 element: <UsersPage/>,
             },
             {
-                path: 'friends',
+                path: ROUTES.FRIENDS,
                 element: <FriendsPage/>,
             },
             {
-                path: 'auth',
+                path: ROUTES.AUTH,
                 element: <AuthPage/>,
             },
             {
-                path: 'registration',
+                path: ROUTES.REGISTRATION,
                 element: <RegistrationPage/>,
             }
         ]

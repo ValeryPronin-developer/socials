@@ -25,4 +25,32 @@ export const AuthContainer = styled.div`
 export const MenuItem = styled(NavLink)`
     font-size: 16px;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+
+    svg {
+        margin-left: 6px;
+    }
+`
+
+export const ThemeContainer = styled.div`
+    @media (min-width: 1150px) {
+        position: absolute;
+        right: 0;
+    }
+`
+
+export const ThemeButton = styled.button`
+    border: none !important;
+    background: none !important;
+    outline: none !important;
+
+    svg {
+        fill: ${({ isActive }) => (isActive ? '#535bf2' : 'currentColor')};
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
 `
