@@ -9,8 +9,7 @@ import {Provider} from 'react-redux'
 import {store} from "./redux/store.js"
 import {Root} from "./components/Root/index.jsx"
 import {PostsPage} from "./pages/posts/index.jsx"
-import {UsersPage} from "./pages/users/index.jsx"
-import {FriendsPage} from "./pages/friends/index.jsx"
+import {UsersAndFriendsPage} from "./pages/users/index.jsx"
 import {AuthPage} from "./pages/auth/index.jsx"
 import {RegistrationPage} from "./pages/registration/index.jsx"
 import {ProfileUserPage} from "./pages/profileUser/index.jsx"
@@ -37,11 +36,7 @@ const router = createBrowserRouter([
             },
             {
                 path: ROUTES.USERS,
-                element: <UsersPage/>,
-            },
-            {
-                path: ROUTES.FRIENDS,
-                element: <FriendsPage/>,
+                element: <UsersAndFriendsPage/>,
             },
             {
                 path: ROUTES.AUTH,

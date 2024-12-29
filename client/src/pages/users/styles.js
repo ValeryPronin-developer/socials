@@ -1,4 +1,6 @@
 import styled from "styled-components"
+import {Tab} from '@mui/material'
+
 
 export const Title = styled.h2`
     font-size: 36px;
@@ -74,4 +76,21 @@ export const RemoveFriendButton = styled.button`
     &:hover {
         background-color: #ff7875 !important;
     }
+`
+
+export const NoFriendsMessage = styled.div`
+    color: gray;
+    text-align: center;
+    margin-top: 20px;
+`
+
+export const StyledTab = styled(Tab)`
+    color: ${(props) => (
+            props.theme === 'dark'
+                    ? '#f4f4f4'
+                    : props.theme === 'light'
+                            ? '#111'
+                            : '#1976d2'
+    )} !important;
+    background: none !important;
 `

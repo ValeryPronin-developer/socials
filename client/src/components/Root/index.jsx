@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import {Outlet} from "react-router-dom"
+import {Outlet, useNavigate} from "react-router-dom"
 import {toast} from "react-toastify"
 import {login, logout} from "../../redux/slices/userSlices.js"
 import {setTheme} from "../../redux/slices/themeSlice.js";
@@ -15,6 +15,7 @@ export const Root = () => {
     const theme = useSelector((state) => state.theme.theme)
     const user = useSelector((state) => state.user.user)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (!user) {
@@ -31,6 +32,20 @@ export const Root = () => {
         }
     }, [dispatch, user])
 
+    useEffect(() => {
+        const root = document.documentElement
+
+        if (theme === 'dark') {
+            root.classList.add('dark')
+            root.classList.remove('light')
+        } else if (theme === 'light') {
+            root.classList.add('light')
+            root.classList.remove('dark')
+        } else {
+            root.classList.remove('dark', 'light')
+        }
+    }, [theme])
+
     const handleThemeChange = (selectedTheme) => {
         dispatch(setTheme(selectedTheme))
         toast.info(`Тема изменена на: ${selectedTheme}`)
@@ -43,6 +58,7 @@ export const Root = () => {
         window[storageKey].removeItem("user")
         localStorage.removeItem("rememberMe")
         dispatch(logout())
+        navigate("/")
     }
 
     return (
@@ -53,13 +69,11 @@ export const Root = () => {
                         <SC.MenuItem to={'/'}>Главная</SC.MenuItem>
                         {user && <SC.MenuItem to={'/posts'}>Посты</SC.MenuItem>}
                         {user && <SC.MenuItem to={'/users'}>Пользователи</SC.MenuItem>}
-                        {user && <SC.MenuItem to={'/friends'}>Друзья</SC.MenuItem>}
                     </SC.MenuContainer>
                     <SC.AuthContainer>
                         {user ? (
                             <>
                                 <SC.MenuItem to={`/user/${user.email}`}>
-                                    {/*{user.name}*/}
                                     <ProfileIcon/>
                                 </SC.MenuItem>
                                 <button onClick={handleLogout}>Выйти</button>

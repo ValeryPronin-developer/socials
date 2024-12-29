@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
 
+const storageKey = localStorage.getItem("rememberMe") === "true"
+    ? "localStorage"
+    : "sessionStorage"
+const persistedUser = JSON.parse(window[storageKey].getItem("user") || "null")
+
 const initialState = {
-    user: null,
+    user: persistedUser,
 }
 
 const userSlice = createSlice({
@@ -16,7 +21,12 @@ const userSlice = createSlice({
         },
         updateFriends: (state, action) => {
             if (state.user) {
-                state.user.friends = action.payload
+                state.user.friends = action.payload;
+
+                const storageKey = localStorage.getItem("rememberMe") === "true"
+                    ? "localStorage"
+                    : "sessionStorage"
+                window[storageKey].setItem("user", JSON.stringify(state.user))
             }
         },
     },
