@@ -21,7 +21,10 @@ const userSlice = createSlice({
         },
         updateFriends: (state, action) => {
             if (state.user) {
-                state.user.friends = action.payload;
+                state.user = {
+                    ...state.user,
+                    ...action.payload,
+                }
 
                 const storageKey = localStorage.getItem("rememberMe") === "true"
                     ? "localStorage"

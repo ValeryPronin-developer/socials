@@ -43,7 +43,9 @@ export const AuthPage = () => {
                 isAdmin: data.isAdmin,
                 token: data.token,
                 email: data.email,
-                friends: data.friends
+                friends: data.friends,
+                receivedRequests: data.receivedRequests,
+                sentRequests: data.sentRequests,
             }))
 
             dispatch(login({
@@ -51,7 +53,9 @@ export const AuthPage = () => {
                 isAdmin: data.isAdmin,
                 token: data.token,
                 email: data.email,
-                friends: data.friends
+                friends: data.friends,
+                receivedRequests: data.receivedRequests,
+                sentRequests: data.sentRequests,
             }))
 
             navigate("/posts")

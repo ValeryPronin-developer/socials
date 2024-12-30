@@ -44,28 +44,6 @@ export const SectionTitle = styled.div`
     color: #666;
 `
 
-export const AddFriendButton = styled.button`
-    margin-left: 30px !important;
-    border: none !important;
-    transition: background 0.3s !important;
-
-    &:hover {
-        background: #646cff !important;
-    }
-`
-
-export const RemoveFriendButton = styled.button`
-    margin-left: 30px !important;
-    background-color: #ff4d4f !important;
-    color: #fff !important;
-    border: none !important;
-    transition: background 0.3s !important;
-
-    &:hover {
-        background-color: #ff7875 !important;
-    }
-`
-
 export const Placeholder = styled.div`
   margin-top: 20px;
   text-align: center;
