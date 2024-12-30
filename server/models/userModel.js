@@ -5,7 +5,9 @@ const UserSchema = new Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     isAdmin: {type: Boolean, default: false},
-    friends: [{type: String}]
+    friends: [{type: String}],
+    sentRequests: [{type: String}],
+    receivedRequests: [{type: String}]
 })
 
 module.exports = model('User', UserSchema)

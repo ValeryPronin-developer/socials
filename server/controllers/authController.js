@@ -51,7 +51,7 @@ class AuthController {
                 {expiresIn: '1h'}
             )
 
-            res.status(200).json({token, name: user.name, isAdmin: user.isAdmin, email, friends: user.friends})
+            res.status(200).json({token, name: user.name, isAdmin: user.isAdmin, email, friends: user.friends, receivedRequests: user.receivedRequests, sentRequests: user.sentRequests})
         } catch (e) {
             res.status(500).json({message: 'Ошибка при авторизации'})
         }
