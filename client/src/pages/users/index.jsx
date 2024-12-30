@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {Link} from "react-router-dom"
-import {updateFriends} from "../../redux/slices/userSlices.js"
-import {toast, ToastContainer} from "react-toastify"
+import {ToastContainer} from "react-toastify"
 import {Tabs, Box} from '@mui/material'
+import {useFriendActions} from "../../hooks/useFriendActions.js"
 import {useApiRequest} from '../../hooks/useApiRequest.js'
 import {useToastTheme} from "../../hooks/useToastTheme.js"
+import {FriendActionButton} from "../../components/ui/FriendActionButton/index.jsx"
 import {Container} from "../../components/Container/index.jsx"
 import {Loading} from "../../components/ui/Loading/index.jsx"
 import Person from '../../../public/person.webp'
@@ -19,6 +20,13 @@ export const UsersAndFriendsPage = () => {
     const [activeTab, setActiveTab] = useState(0)
 
     const userAuth = useSelector((state) => state.user.user)
+    const {
+        handleSendRequest,
+        handleAcceptRequest,
+        handleRejectRequest,
+        handleCancelRequest,
+        handleRemoveFriend
+    } = useFriendActions()
     const toastTheme = useToastTheme()
     const apiRequest = useApiRequest()
     const dispatch = useDispatch()
@@ -52,38 +60,6 @@ export const UsersAndFriendsPage = () => {
         fetchFriends()
     }, [apiRequest, userAuth, dispatch])
 
-    const handleAddFriend = async (friendEmail) => {
-        try {
-            await apiRequest({
-                url: 'http://localhost:3002/api/users/add-friend',
-                method: 'post',
-                body: {currentEmail: userAuth.email, friendEmail}
-            })
-            dispatch(updateFriends([...userAuth.friends, friendEmail]))
-            console.log(userAuth.friends)
-            toast.success("Пользователь добавлен в друзья")
-        } catch (e) {
-            console.error(e)
-            toast.error("Произошла ошибка при добавлении в друзья")
-        }
-    }
-
-    const handleRemoveFriend = async (friendEmail) => {
-        try {
-            await apiRequest({
-                url: 'http://localhost:3002/api/users/remove-friend',
-                method: 'post',
-                body: {currentEmail: userAuth.email, friendEmail}
-            })
-            dispatch(updateFriends(userAuth.friends.filter((email) => email !== friendEmail)))
-            console.log(userAuth.friends)
-            toast.success("Пользователь удален из друзей")
-        } catch (e) {
-            console.error(e)
-            toast.error("Произошла ошибка при удалении из друзей")
-        }
-    }
-
     if (loading) {
         return <Loading/>
     }
@@ -104,21 +80,15 @@ export const UsersAndFriendsPage = () => {
                             <SC.UserName>
                                 <Link to={`/user/${user.email}`}>{user.name}</Link>
                             </SC.UserName>
-                            {userAuth && userAuth.email !== user.email && (
-                                userAuth.friends?.includes(user.email) ? (
-                                    <SC.RemoveFriendButton
-                                        onClick={() => handleRemoveFriend(user.email)}
-                                    >
-                                        Удалить из друзей
-                                    </SC.RemoveFriendButton>
-                                ) : (
-                                    <SC.AddFriendButton
-                                        onClick={() => handleAddFriend(user.email)}
-                                    >
-                                        Добавить в друзья
-                                    </SC.AddFriendButton>
-                                )
-                            )}
+                            <FriendActionButton
+                                userAuth={userAuth}
+                                user={user}
+                                handleSendRequest={handleSendRequest}
+                                handleCancelRequest={handleCancelRequest}
+                                handleAcceptRequest={handleAcceptRequest}
+                                handleRejectRequest={handleRejectRequest}
+                                handleRemoveFriend={handleRemoveFriend}
+                            />
                         </SC.UserDetails>
                     </SC.UserInfo>
                 </SC.UserCard>

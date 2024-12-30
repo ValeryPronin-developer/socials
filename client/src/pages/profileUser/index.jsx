@@ -1,11 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux"
-import {toast, ToastContainer} from "react-toastify"
+import {ToastContainer} from "react-toastify"
 import {useToastTheme} from "../../hooks/useToastTheme.js"
 import {useApiRequest} from '../../hooks/useApiRequest.js'
 import {useGetPostList} from "../../hooks/useGetPostList.js"
-import {updateFriends} from "../../redux/slices/userSlices.js"
+import {useFriendActions} from "../../hooks/useFriendActions.js"
+import {FriendActionButton} from "../../components/ui/FriendActionButton/index.jsx"
 import {Container} from "../../components/Container/index.jsx"
 import {Loading} from "../../components/ui/Loading/index.jsx"
 import {AddPostItem} from "../posts/components/AddPostItem/index.jsx"
@@ -20,6 +21,13 @@ export const ProfileUserPage = () => {
     const [userPosts, setUserPosts] = useState([])
 
     const userAuth = useSelector((state) => state.user.user)
+    const {
+        handleSendRequest,
+        handleAcceptRequest,
+        handleRejectRequest,
+        handleCancelRequest,
+        handleRemoveFriend
+    } = useFriendActions()
     const toastTheme = useToastTheme()
     const {userId} = useParams()
     const apiRequest = useApiRequest()
@@ -53,38 +61,6 @@ export const ProfileUserPage = () => {
         fetchUser()
     }, [apiRequest, userId])
 
-    const AddFriend = async (friendEmail) => {
-        try {
-            await apiRequest({
-                url: 'http://localhost:3002/api/users/add-friend',
-                method: 'post',
-                body: {currentEmail: userAuth.email, friendEmail}
-            })
-
-            dispatch(updateFriends([...userAuth.friends, friendEmail]))
-            toast.success("Пользователь добавлен в друзья")
-        } catch (e) {
-            console.error(e)
-            toast.error("Произошла ошибка при добавлении в друзья")
-        }
-    }
-
-    const RemoveFriend = async (friendEmail) => {
-        try {
-            await apiRequest({
-                url: 'http://localhost:3002/api/users/remove-friend',
-                method: 'post',
-                body: { currentEmail: userAuth.email, friendEmail }
-            })
-
-            dispatch(updateFriends(userAuth.friends.filter((email) => email !== friendEmail)))
-            toast.success("Пользователь удален из друзей")
-        } catch (e) {
-            console.error(e)
-            toast.error("Произошла ошибка при удалении из друзей")
-        }
-    }
-
     if (loading) {
         return <Loading/>
     }
@@ -106,18 +82,16 @@ export const ProfileUserPage = () => {
                     <SC.SectionTitle>Друзья: {user.friends.length}</SC.SectionTitle>
                 </SC.UserDetails>
             </SC.ProfileContainer>
-            {userAuth && userAuth.email !== user.email && (
-                userAuth.friends?.includes(user.email) ? (
-                    <SC.RemoveFriendButton onClick={() => RemoveFriend(user.email)}>
-                        Удалить из друзей
-                    </SC.RemoveFriendButton>
-                ) : (
-                    <SC.AddFriendButton onClick={() => AddFriend(user.email)}>
-                        Добавить в друзья
-                    </SC.AddFriendButton>
-                )
-            )}
-
+            <FriendActionButton
+                userAuth={userAuth}
+                user={user}
+                handleSendRequest={handleSendRequest}
+                handleCancelRequest={handleCancelRequest}
+                handleAcceptRequest={handleAcceptRequest}
+                handleRejectRequest={handleRejectRequest}
+                handleRemoveFriend={handleRemoveFriend}
+                marginLeft="40px"
+            />
             {userAuth && userAuth.email === userId && <AddPostItem updatePostList={updatePostList}/>}
             {userPosts.length > 0 ? (
                 <PostList postList={userPosts} updatePostList={updatePostList} show={false}/>

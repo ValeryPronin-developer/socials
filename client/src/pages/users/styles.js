@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import {Tab} from '@mui/material'
 
-
 export const Title = styled.h2`
     font-size: 36px;
     text-align: center;
@@ -56,16 +55,6 @@ export const UserName = styled.div`
     font-size: 20px;
 `
 
-export const AddFriendButton = styled.button`
-    font-size: 14px !important;
-    border: none !important;
-    transition: background 0.3s !important;
-
-    &:hover {
-        background: #646cff !important;
-    }
-`
-
 export const RemoveFriendButton = styled.button`
     font-size: 14px !important;
     background-color: #ff4d4f !important;
@@ -93,4 +82,5 @@ export const StyledTab = styled(Tab)`
                             : '#1976d2'
     )} !important;
     background: none !important;
+    outline: none !important;
 `
